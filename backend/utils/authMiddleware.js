@@ -21,17 +21,24 @@ export const authMiddleware = async (req, res, next) => {
 
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Try ACCESS_TOKEN_SECRET first, fallback to JWT_SECRET for legacy/simple setups
+      const secret = process.env.ACCESS_TOKEN_SECRET || process.env.JWT_SECRET;
+      decoded = jwt.verify(token, secret);
     } catch (err) {
+      console.error("JWT Verify Error:", err.message);
       return res.status(401).json({ error: 'Invalid token' });
     }
 
     if (!decoded || !decoded.id) {
+      console.error("Invalid Token Payload:", decoded);
       return res.status(401).json({ error: 'Invalid token payload' });
     }
 
     const user = await User.findById(decoded.id).select('-password');
-    if (!user) return res.status(401).json({ error: 'User not found' });
+    if (!user) {
+      console.error("User not found for ID:", decoded.id);
+      return res.status(401).json({ error: 'User not found' });
+    }
 
     req.user = user;
     next();

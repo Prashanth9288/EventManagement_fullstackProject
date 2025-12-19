@@ -97,6 +97,7 @@
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login({ setUser }) {
   const navigate = useNavigate();
@@ -123,44 +124,27 @@ export default function Login({ setUser }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
 
-      // 1️⃣ Save token to localStorage
       localStorage.setItem("userToken", data.accessToken);
 
-      // Decode JWT payload to get user id (payload contains id and email)
-      const parseJwt = (token) => {
-        try {
-          const base64Url = token.split(".")[1];
-          const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-          const jsonPayload = decodeURIComponent(
-            atob(base64)
-              .split("")
-              .map(function (c) {
-                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-              })
-              .join("")
-          );
-          return JSON.parse(jsonPayload);
-        } catch (e) {
-          return null;
-        }
-      };
-
-      const payload = parseJwt(data.accessToken) || {};
+      const payload = jwtDecode(data.accessToken);
       const userObj = {
         _id: payload.id || null,
         email: payload.email || formData.email,
         name: data.name || formData.email || "User",
+        role: payload.role || "user" // Extract role from token
       };
 
-      // Save user info in both keys for compatibility (many components expect "user" or "userData")
       localStorage.setItem("userData", JSON.stringify(userObj));
       localStorage.setItem("user", JSON.stringify(userObj));
 
-      // Update App state
       if (setUser) setUser(userObj);
 
-      // Navigate
-      navigate("/dashboard");
+      // Role-Based Redirect
+      if (userObj.role === 'organizer') {
+        navigate("/organizer-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -169,37 +153,65 @@ export default function Login({ setUser }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#FDFDF7] relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3"></div>
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+      <div className="bg-white shadow-xl rounded-3xl p-10 w-full max-w-md border border-gray-100 relative z-10 mx-4">
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 bg-gradient-to-tr from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg mx-auto mb-4">
+            E
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+          <p className="text-gray-500">Sign in to access your events</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full border p-2 rounded"
-          />
-          <input
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className="w-full border p-2 rounded"
-          />
-          <button className="w-full bg-indigo-600 text-white p-2 rounded">
-            {loading ? "Logging in..." : "Login"}
+        {error && (
+          <div className="bg-red-50 text-red-600 p-3 rounded-xl mb-6 text-sm flex items-center gap-2 border border-red-100">
+            ⚠️ {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Email Address</label>
+            <input
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+            />
+          </div>
+          
+          <div>
+            <div className="flex justify-between items-center mb-1.5 ml-1">
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <a href="#" className="text-xs text-teal-600 hover:text-teal-700 font-medium">Forgot Password?</a>
+            </div>
+            <input
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+            />
+          </div>
+
+          <button 
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+          >
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-8 text-center text-gray-500 text-sm">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-indigo-600 hover:underline">
-            Sign Up
+          <Link to="/signup" className="text-teal-600 font-bold hover:text-teal-700 hover:underline">
+            Create Account
           </Link>
         </p>
       </div>

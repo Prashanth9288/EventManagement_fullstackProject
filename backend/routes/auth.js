@@ -16,7 +16,8 @@ const saltRounds = 10;
 const registerSchema = Joi.object({
   name: Joi.string().min(2).max(100).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required()
+  password: Joi.string().min(6).required(),
+  role: Joi.string().valid('user', 'organizer').default('user')
 });
 
 router.post('/register', async (req, res, next) => {
@@ -30,9 +31,14 @@ router.post('/register', async (req, res, next) => {
     // Hash password
     const passwordHash = await bcrypt.hash(value.password, saltRounds);
 
-    const user = await User.create({ name: value.name, email: value.email, passwordHash });
+    const user = await User.create({ 
+      name: value.name, 
+      email: value.email, 
+      passwordHash,
+      role: value.role 
+    });
 
-    const safeUser = { id: user._id, name: user.name, email: user.email, createdAt: user.createdAt };
+    const safeUser = { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt };
     res.status(201).json({ user: safeUser });
   } catch (err) {
     next(err);
@@ -59,7 +65,7 @@ router.post('/login', async (req, res, next) => {
     if (!passwordMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
     // Generate tokens
-    const payload = { id: user._id, email: user.email };
+    const payload = { id: user._id, email: user.email, role: user.role };
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXP });
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXP });
 
@@ -107,6 +113,55 @@ router.post('/refresh', async (req, res, next) => {
     if (err.name === 'TokenExpiredError') return res.status(401).json({ error: 'Refresh token expired' });
     next(err);
   }
+});
+
+
+// ------------------
+// GET PROFILE
+// ------------------
+router.get('/profile', async (req, res, next) => {
+    try {
+        const authHeader = req.headers['authorization'];
+        if(!authHeader) return res.status(401).json({error: "No token provided"});
+        
+        const token = authHeader.split(' ')[1];
+        if(!token) return res.status(401).json({error: "No token provided"});
+
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = await User.findById(decoded.id).select('-passwordHash -refreshTokenHash');
+        
+        if (!user) return res.status(404).json({ error: "User not found" });
+        res.json(user);
+    } catch (err) {
+        return res.status(401).json({ error: "Invalid token" });
+    }
+});
+
+// ------------------
+// UPDATE PROFILE
+// ------------------
+router.put('/profile', async (req, res, next) => {
+    try {
+        const authHeader = req.headers['authorization'];
+        if(!authHeader) return res.status(401).json({error: "No token provided"});
+        
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+        const { name, email, branding } = req.body;
+        
+        const user = await User.findByIdAndUpdate(
+            decoded.id, 
+            { name, email, branding }, 
+            { new: true }
+        ).select('-passwordHash -refreshTokenHash');
+
+        if (!user) return res.status(404).json({ error: "User not found" });
+        res.json(user);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Failed to update profile" });
+    }
 });
 
 export default router;

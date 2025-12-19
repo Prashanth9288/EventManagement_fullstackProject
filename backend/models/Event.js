@@ -7,6 +7,9 @@ const EventSchema = new Schema({
   description: { type: String },
   tags: [String],
   privacy: { type: String, enum: ['public', 'private', 'rsvp'], default: 'public' },
+  type: { type: String, enum: ['corporate', 'social', 'workshop', 'other'], default: 'social' },
+  format: { type: String, enum: ['virtual', 'physical', 'hybrid'], default: 'physical' },
+  status: { type: String, enum: ['draft', 'published', 'past', 'cancelled'], default: 'draft' },
   start: { type: Date, required: true },
   end: { type: Date, required: true },
   timezone: { type: String, default: 'UTC' },
@@ -18,7 +21,34 @@ const EventSchema = new Schema({
     type: { type: String, default: 'Point' },
     coordinates: { type: [Number], default: [0, 0] } // [lng, lat]
   },
-  media: [String],
+  virtualVenue: {
+    link: String,
+    platform: String
+  },
+  media: {
+    banners: [String],
+    logos: [String],
+    videos: [String],
+    gallery: [String]
+  },
+  ticketing: {
+    type: { type: String, enum: ['free', 'paid'], default: 'free' },
+    currency: { type: String, default: 'USD' },
+    tiers: [{
+      name: String,
+      price: Number,
+      capacity: Number,
+      description: String
+    }]
+  },
+  agenda: [{
+    title: String,
+    startTime: String,
+    type: String,
+    description: String
+  }],
+  attendees: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+  remindersSent: { type: Boolean, default: false },
   settings: { type: Object, default: {} }
 }, { timestamps: true });
 

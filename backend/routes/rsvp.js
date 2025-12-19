@@ -17,6 +17,11 @@ router.post('/:eventId', authMiddleware, async (req, res) => {
     const { status, note } = req.body;
     const event = await Event.findById(req.params.eventId);
     if (!event) return res.status(404).json({ error: 'Event not found' });
+    
+    // Ensure attendees array exists (for legacy events)
+    if (!event.attendees) {
+      event.attendees = [];
+    }
 
     // Either update existing RSVP or create new
     let rsvp = await RSVP.findOne({ eventId: event._id, userId: req.user.id });
@@ -32,7 +37,22 @@ router.post('/:eventId', authMiddleware, async (req, res) => {
         note
       });
     }
+
     await rsvp.save();
+
+    await rsvp.save();
+
+    // Sync with Event attendees list using atomic operators to avoid validation/race conditions
+    if (status === 'yes') {
+        await Event.findByIdAndUpdate(event._id, {
+            $addToSet: { attendees: req.user.id }
+        });
+    } else {
+        await Event.findByIdAndUpdate(event._id, {
+            $pull: { attendees: req.user.id }
+        });
+    }
+
     res.json(rsvp);
   } catch (err) {
     res.status(400).json({ error: err.message });

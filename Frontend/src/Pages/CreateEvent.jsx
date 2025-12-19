@@ -1,276 +1,6 @@
-// import { useState, useEffect } from "react";
-// import { useNavigate, useSearchParams } from "react-router-dom";
-
-// export default function CreateEvent() {
-//   const navigate = useNavigate();
-//   const [searchParams] = useSearchParams();
-//   const eventId = searchParams.get("id");
-
-//   // Get current logged-in user from localStorage
-//   const currentUser = JSON.parse(localStorage.getItem("user"));
-
-//   const [formData, setFormData] = useState({
-//     title: "",
-//     description: "",
-//     tags: [],
-//     privacy: "public",
-//     start: "",
-//     end: "",
-//     timezone: "UTC",
-//     location: { address: "", lat: "", lng: "", placeId: "" },
-//   });
-
-//   const [tagInput, setTagInput] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   // Fetch existing event for editing
-//   useEffect(() => {
-//     if (!eventId) return;
-
-//     const fetchEvent = async () => {
-//       try {
-//         const res = await fetch(`http://localhost:5000/api/events/${eventId}`);
-//         const data = await res.json();
-//         if (!res.ok) throw new Error(data.error || "Failed to fetch event");
-
-//         setFormData({
-//           title: data.title || "",
-//           description: data.description || "",
-//           tags: data.tags || [],
-//           privacy: data.privacy || "public",
-//           start: data.start ? data.start.slice(0, 16) : "",
-//           end: data.end ? data.end.slice(0, 16) : "",
-//           timezone: data.timezone || "UTC",
-//           location: data.location || {
-//             address: "",
-//             lat: "",
-//             lng: "",
-//             placeId: "",
-//           },
-//         });
-//       } catch (err) {
-//         setError(err.message);
-//       }
-//     };
-
-//     fetchEvent();
-//   }, [eventId]);
-
-//   // Handle input changes
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     if (["address", "lat", "lng", "placeId"].includes(name)) {
-//       setFormData((prev) => ({
-//         ...prev,
-//         location: { ...prev.location, [name]: value },
-//       }));
-//     } else {
-//       setFormData((prev) => ({ ...prev, [name]: value }));
-//     }
-//   };
-
-//   // Handle tags
-//   const handleAddTag = () => {
-//     if (tagInput && !formData.tags.includes(tagInput)) {
-//       setFormData((prev) => ({ ...prev, tags: [...prev.tags, tagInput] }));
-//       setTagInput("");
-//     }
-//   };
-//   const handleRemoveTag = (tag) => {
-//     setFormData((prev) => ({
-//       ...prev,
-//       tags: prev.tags.filter((t) => t !== tag),
-//     }));
-//   };
-
-//   // Submit event
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError("");
-
-//     try {
-//       if (!currentUser || !currentUser._id) {
-//         throw new Error("User not logged in");
-//       }
-
-//       const payload = {
-//         ...formData,
-//         host: currentUser._id, // Assign current user as host
-//       };
-
-//       const url = eventId
-//         ? `http://localhost:5000/api/events/${eventId}`
-//         : "http://localhost:5000/api/events";
-//       const method = eventId ? "PUT" : "POST";
-
-//       const res = await fetch(url, {
-//         method,
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(payload),
-//       });
-
-//       const data = await res.json();
-//       if (!res.ok) throw new Error(data.error || "Failed to submit event");
-
-//       navigate("/events");
-//     } catch (err) {
-//       setError(err.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
-//       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
-//         <h2 className="text-2xl font-bold mb-4">
-//           {eventId ? "Update Event" : "Create Event"}
-//         </h2>
-//         {error && <p className="text-red-500 mb-2">{error}</p>}
-//         <form className="space-y-4" onSubmit={handleSubmit}>
-//           <input
-//             type="text"
-//             name="title"
-//             placeholder="Event Title"
-//             value={formData.title}
-//             onChange={handleChange}
-//             required
-//             className="w-full p-2 border rounded"
-//           />
-//           <textarea
-//             name="description"
-//             placeholder="Description"
-//             value={formData.description}
-//             onChange={handleChange}
-//             className="w-full p-2 border rounded"
-//           />
-
-//           {/* Tags */}
-//           <div>
-//             <div className="flex gap-2 mb-2">
-//               <input
-//                 type="text"
-//                 value={tagInput}
-//                 onChange={(e) => setTagInput(e.target.value)}
-//                 placeholder="Add tag"
-//                 className="border p-2 rounded flex-1"
-//               />
-//               <button
-//                 type="button"
-//                 onClick={handleAddTag}
-//                 className="bg-indigo-600 text-white px-4 rounded hover:bg-indigo-700"
-//               >
-//                 Add
-//               </button>
-//             </div>
-//             <div className="flex gap-2 flex-wrap">
-//               {formData.tags.map((tag) => (
-//                 <span
-//                   key={tag}
-//                   className="bg-gray-200 px-2 py-1 rounded flex items-center gap-1"
-//                 >
-//                   {tag}
-//                   <button
-//                     type="button"
-//                     onClick={() => handleRemoveTag(tag)}
-//                     className="text-red-500 font-bold"
-//                   >
-//                     ×
-//                   </button>
-//                 </span>
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* Privacy */}
-//           <select
-//             name="privacy"
-//             value={formData.privacy}
-//             onChange={handleChange}
-//             className="w-full p-2 border rounded"
-//           >
-//             <option value="public">Public</option>
-//             <option value="private">Private</option>
-//             <option value="rsvp">RSVP</option>
-//           </select>
-
-//           {/* Start/End */}
-//           <div className="flex gap-2">
-//             <input
-//               type="datetime-local"
-//               name="start"
-//               value={formData.start}
-//               onChange={handleChange}
-//               required
-//               className="w-1/2 p-2 border rounded"
-//             />
-//             <input
-//               type="datetime-local"
-//               name="end"
-//               value={formData.end}
-//               onChange={handleChange}
-//               required
-//               className="w-1/2 p-2 border rounded"
-//             />
-//           </div>
-
-//           {/* Location */}
-//           <input
-//             type="text"
-//             name="address"
-//             placeholder="Address"
-//             value={formData.location.address}
-//             onChange={handleChange}
-//             required
-//             className="w-full p-2 border rounded"
-//           />
-//           <div className="flex gap-2">
-//             <input
-//               type="number"
-//               step="any"
-//               name="lat"
-//               placeholder="Latitude"
-//               value={formData.location.lat}
-//               onChange={handleChange}
-//               required
-//               className="w-1/2 p-2 border rounded"
-//             />
-//             <input
-//               type="number"
-//               step="any"
-//               name="lng"
-//               placeholder="Longitude"
-//               value={formData.location.lng}
-//               onChange={handleChange}
-//               required
-//               className="w-1/2 p-2 border rounded"
-//             />
-//           </div>
-
-//           <button
-//             type="submit"
-//             disabled={loading}
-//             className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
-//           >
-//             {loading
-//               ? eventId
-//                 ? "Updating..."
-//                 : "Creating..."
-//               : eventId
-//               ? "Update Event"
-//               : "Create Event"}
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import Footer from "../components/Footer";
 
 export default function CreateEvent() {
   const navigate = useNavigate();
@@ -305,6 +35,11 @@ export default function CreateEvent() {
   useEffect(() => {
     if (!token) {
       navigate("/login");
+      return;
+    }
+
+    if (user && user.role !== 'organizer') {
+      navigate("/dashboard");
       return;
     }
 
@@ -407,7 +142,7 @@ export default function CreateEvent() {
       if (!res.ok) {
         throw new Error(data.error || "Failed to submit event");
       }
-      navigate("/events");
+      navigate("/organizer-dashboard");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -416,143 +151,205 @@ export default function CreateEvent() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-4">
-          {eventId ? "Update Event" : "Create Event"}
-        </h2>
-        {error && <p className="text-red-500 mb-2">{error}</p>}
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Form fields remain the same */}
-          <input
-            type="text"
-            name="title"
-            placeholder="Event Title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          ></textarea>
-          {/* Tags */}
-          <div>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                placeholder="Add a tag"
-                className="border p-2 rounded flex-1"
-              />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="bg-indigo-600 text-white px-4 rounded hover:bg-indigo-700"
-              >
-                Add
-              </button>
+    <div className="min-h-screen bg-[#FDFDF7] relative overflow-hidden flex flex-col">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-3xl -translate-x-1/3 -translate-y-1/3 -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 -z-10"></div>
+
+      <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+            <button onClick={() => navigate(-1)} className="group flex items-center gap-2 text-gray-500 hover:text-teal-600 font-bold mb-8 transition-colors">
+            <span className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center group-hover:border-teal-200 group-hover:bg-teal-50 transition-all">←</span>
+            Cancel
+            </button>
+
+            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="px-8 py-6 border-b border-gray-50 bg-gray-50/30 flex justify-between items-center">
+                <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                    {eventId ? "Edit Event" : "Create New Event"}
+                </h2>
+                <p className="text-gray-500 text-sm mt-1">Fill in the details to launch your event</p>
+                </div>
+                <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 text-xl">
+                ✨
+                </div>
             </div>
-            <div className="flex gap-2 flex-wrap">
-              {formData.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-gray-200 px-2 py-1 rounded flex items-center gap-1"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="text-red-500 font-bold"
-                  >
-                    x
-                  </button>
-                </span>
-              ))}
+            
+            <div className="p-8">
+                {error && (
+                <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-sm flex items-center gap-2 border border-red-100">
+                    ⚠️ {error}
+                </div>
+                )}
+
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                {/* Title & Privacy */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Event Title</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="e.g. Summer Music Festival"
+                        value={formData.title}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                    />
+                    </div>
+                    <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Privacy</label>
+                    <select
+                        name="privacy"
+                        value={formData.privacy}
+                        onChange={handleChange}
+                        className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white cursor-pointer"
+                    >
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                        <option value="rsvp">RSVP Only</option>
+                    </select>
+                    </div>
+                </div>
+
+                {/* Description */}
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Description</label>
+                    <textarea
+                    name="description"
+                    placeholder="Tell people what your event is about..."
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows="4"
+                    className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white resize-none"
+                    ></textarea>
+                </div>
+
+                {/* Time */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Start Time</label>
+                    <input
+                        type="datetime-local"
+                        name="start"
+                        value={formData.start}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                    />
+                    </div>
+                    <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">End Time</label>
+                    <input
+                        type="datetime-local"
+                        name="end"
+                        value={formData.end}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                    />
+                    </div>
+                </div>
+
+                {/* Location */}
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Location</label>
+                    <div className="space-y-4">
+                        <input
+                        type="text"
+                        name="address"
+                        placeholder="Venue Name or Address"
+                        value={formData.location.address}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                        />
+                        <div className="grid grid-cols-2 gap-4">
+                        <input
+                            type="number"
+                            step="any"
+                            name="lat"
+                            placeholder="Latitude (Optional)"
+                            value={formData.location.lat}
+                            onChange={handleChange}
+                            className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                        />
+                        <input
+                            type="number"
+                            step="any"
+                            name="lng"
+                            placeholder="Longitude (Optional)"
+                            value={formData.location.lng}
+                            onChange={handleChange}
+                            className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                        />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Tags */}
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Tags</label>
+                    <div className="flex gap-2 mb-3">
+                    <input
+                        type="text"
+                        value={tagInput}
+                        onChange={(e) => setTagInput(e.target.value)}
+                        placeholder="Add a tag..."
+                        className="flex-1 px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+                        onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+                    />
+                    <button
+                        type="button"
+                        onClick={handleAddTag}
+                        className="bg-gray-900 text-white px-6 rounded-xl font-bold hover:bg-gray-800 transition-colors"
+                    >
+                        Add
+                    </button>
+                    </div>
+                    <div className="flex gap-2 flex-wrap min-h-[32px]">
+                    {formData.tags.map((tag) => (
+                        <span
+                        key={tag}
+                        className="bg-teal-50 text-teal-700 px-3 py-1 rounded-lg border border-teal-100 flex items-center gap-2 text-sm font-medium"
+                        >
+                        #{tag}
+                        <button
+                            type="button"
+                            onClick={() => handleRemoveTag(tag)}
+                            className="text-teal-400 hover:text-teal-600 font-bold"
+                        >
+                            ×
+                        </button>
+                        </span>
+                    ))}
+                    {formData.tags.length === 0 && <span className="text-gray-400 text-sm italic py-1">No tags added yet</span>}
+                    </div>
+                </div>
+
+                <div className="pt-4 border-t border-gray-50">
+                    <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-gradient-to-r from-teal-400 via-emerald-500 to-teal-600 text-white text-lg font-bold py-4 rounded-xl hover:shadow-xl hover:shadow-teal-500/40 hover:scale-[1.02] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed transform"
+                    >
+                    {loading
+                        ? eventId
+                        ? "Updating Event..."
+                        : "Creating Event..."
+                        : eventId
+                        ? "Update Event"
+                        : "Create Event"}
+                    </button>
+                </div>
+                </form>
             </div>
-          </div>
-          {/* Privacy */}
-          <select
-            name="privacy"
-            value={formData.privacy}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          >
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-            <option value="rsvp">RSVP</option>
-          </select>
-          {/* Start/End Time */}
-          <div className="flex gap-2">
-            <input
-              type="datetime-local"
-              name="start"
-              value={formData.start}
-              onChange={handleChange}
-              required
-              className="w-1/2 p-2 border rounded"
-            />
-            <input
-              type="datetime-local"
-              name="end"
-              value={formData.end}
-              onChange={handleChange}
-              required
-              className="w-1/2 p-2 border rounded"
-            />
-          </div>
-          {/* Location */}
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            value={formData.location.address}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-          <div className="flex gap-2">
-            <input
-              type="number"
-              step="any"
-              name="lat"
-              placeholder="Latitude"
-              value={formData.location.lat}
-              onChange={handleChange}
-              required
-              className="w-1/2 p-2 border rounded"
-            />
-            <input
-              type="number"
-              step="any"
-              name="lng"
-              placeholder="Longitude"
-              value={formData.location.lng}
-              onChange={handleChange}
-              required
-              className="w-1/2 p-2 border rounded"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
-          >
-            {loading
-              ? eventId
-                ? "Updating..."
-                : "Creating..."
-              : eventId
-              ? "Update Event"
-              : "Create Event"}
-          </button>
-        </form>
+            </div>
+        </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }

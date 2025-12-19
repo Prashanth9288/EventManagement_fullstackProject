@@ -1,19 +1,22 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-// Helper function to format dates
-const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
-  return new Date(dateString).toLocaleString([], {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-};
+import {
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaClock,
+  FaUser,
+  FaUsers,
+  FaShareAlt,
+  FaCheckCircle
+} from "react-icons/fa";
+import Footer from "../components/Footer";
+import Timeline from "../components/Timeline";
+import PaymentModal from "../components/PaymentModal";
+import EventDiscuss from "../components/EventDiscuss";
+import EventPolls from "../components/EventPolls";
 
 export default function EventDetails({ user }) {
   const { id } = useParams();
@@ -21,450 +24,459 @@ export default function EventDetails({ user }) {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [rsvps, setRsvps] = useState([]);
-  const [activeTab, setActiveTab] = useState("discussion");
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  const [activeTab, setActiveTab] = useState("about");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [rsvpLoading, setRsvpLoading] = useState(false);
+  const [isAttending, setIsAttending] = useState(false);
+  const [userResponse, setUserResponse] = useState(null);
 
-  useEffect(() => {
-    const fetchAllDetails = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const token = localStorage.getItem("userToken");
-        if (!token) {
-          navigate("/login");
-          return;
-        }
+  // Helper to format dates
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
-        // Fetch Event, RSVPs, and Comments in parallel
-        const [eventRes, rsvpRes] = await Promise.all([
-          fetch(`http://localhost:5000/api/events/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch(`http://localhost:5000/api/rsvps/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-        ]);
+  const formatTime = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
-        if (!eventRes.ok) {
-          const errorData = await eventRes.json();
-          throw new Error(errorData.error || "Failed to fetch event details");
-        }
-        const eventData = await eventRes.json();
-        setEvent(eventData);
-        setComments(eventData.comments || []); // Assuming comments are part of event data
-
-        if (rsvpRes.ok) {
-          const rsvpData = await rsvpRes.json();
-          setRsvps(rsvpData);
-        }
-
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAllDetails();
-  }, [id, navigate]);
-
-  const handleRsvp = async (status) => {
+  const fetchEvent = async () => {
     try {
       const token = localStorage.getItem("userToken");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(`http://localhost:5000/api/events/${id}`, {
+        headers,
+      });
+      
+      if (!res.ok) {
+         if(res.status === 404) throw new Error("Event not found");
+         throw new Error("Failed to load event details");
+      }
+
+      const data = await res.json();
+      setEvent(data);
+      
+      // Check if user is attending
+      if(user && data.attendees) {
+          const isGoing = data.attendees.some(att => att._id === user._id || att === user._id);
+          setIsAttending(isGoing);
+          if (isGoing) setUserResponse('yes'); // Default assumption, or fetch real status
+      }
+
+      // Check subscription
+      if (token && data.host) {
+          const hostId = data.host._id || data.host; // Handle populated or string ID
+          const subRes = await fetch(`http://localhost:5000/api/subscriptions/${hostId}`, { headers });
+          if(subRes.ok) {
+              const subData = await subRes.json();
+              setIsSubscribed(subData.subscribed);
+          }
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+       setLoading(true);
+       fetchEvent();
+    }
+  }, [id]);
+
+  const handleRSVP = async (status) => {
+    if (rsvpLoading) return;
+    
+    // Check if payment is required for "Yes"
+    if (status === 'yes' && (event.price > 0 || event.ticketing?.type === 'paid' || event.privacy === 'private')) {
+        setShowPaymentModal(true);
+        return;
+    }
+
+    try {
+      setRsvpLoading(true);
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        toast.error("Please login to RSVP");
+        return;
+      }
+
       const res = await fetch(`http://localhost:5000/api/rsvps/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status })
       });
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to RSVP");
+
+      const data = await res.json();
+      
+      if (res.status === 401) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("userToken");
+          localStorage.removeItem("userData");
+          navigate("/login");
+          return;
       }
-      const newRsvp = await res.json();
-      // Update the RSVPs list
-      setRsvps(prevRsvps => {
-        const existingRsvpIndex = prevRsvps.findIndex(r => r.userId._id === newRsvp.userId);
-        if (existingRsvpIndex > -1) {
-          const updatedRsvps = [...prevRsvps];
-          updatedRsvps[existingRsvpIndex] = { ...updatedRsvps[existingRsvpIndex], status: newRsvp.status };
-          return updatedRsvps;
-        } else {
-          // This part might need adjustment based on how your backend sends back the user object on new RSVP
-          return [...prevRsvps, { ...newRsvp, userId: { _id: newRsvp.userId, name: user.name, email: user.email }}];
-        }
-      });
-      toast.success(`You have RSVP'd as ${status}`);
+
+      if (res.ok) {
+        toast.success(`RSVP Updated: ${status}`);
+        setUserResponse(status); // Optimistic update
+        fetchEvent(); 
+      } else {
+        toast.error(data.error || "RSVP failed");
+      }
     } catch (err) {
-      toast.error(err.message);
+      console.error(err);
+      toast.error("Something went wrong");
+    } finally {
+      setRsvpLoading(false);
     }
   };
 
-  const handlePostComment = async (e) => {
-      e.preventDefault();
-      if (!comment.trim()) return;
+  const handleTicketSuccess = (ticket) => {
+      toast.success("Ticket Purchased & RSVP Confirmed!");
+      setUserResponse('yes');
+      fetchEvent();
+  };
 
+  const handleSubscribe = async () => {
+      if(!user) {
+          toast.info("Login to subscribe");
+          return;
+      }
       try {
-          const token = localStorage.getItem("userToken");
-          const res = await fetch(`http://localhost:5000/api/events/${id}/comments`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`,
-              },
-              body: JSON.stringify({ text: comment }),
-          });
-
-          if (!res.ok) {
-              const errorData = await res.json();
-              throw new Error(errorData.error || "Failed to post comment");
-          }
-
-          const newComment = await res.json();
-          setComments(prevComments => [newComment, ...prevComments]);
-          setComment("");
-          toast.success("Comment posted!");
-      } catch (err) {
-          toast.error(err.message);
+        const token = localStorage.getItem("userToken");
+        const res = await fetch('http://localhost:5000/api/subscriptions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({ organizerId: event.host._id })
+        });
+        if(res.ok) {
+            setIsSubscribed(true);
+            toast.success("Subscribed to host updates!");
+        } else {
+            const data = await res.json();
+            toast.error(data.error);
+        }
+      } catch(err) {
+          console.error(err);
       }
   };
 
-  if (loading) return <p className="text-center mt-8">Loading event details...</p>;
-  if (error) return <p className="text-red-500 text-center mt-8">{error}</p>;
-  if (!event) return <p className="text-center mt-8">Event not found.</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7]">
+        <div className="w-16 h-16 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin mb-4"></div>
+        <p className="text-gray-500 font-medium">Loading event details...</p>
+      </div>
+    );
+  }
 
-  // RSVP Counts
-  const rsvpCounts = {
-    yes: rsvps.filter(r => r.status === 'yes').length,
-    maybe: rsvps.filter(r => r.status === 'maybe').length,
-    no: rsvps.filter(r => r.status === 'no').length,
-  };
-  const userRsvp = rsvps.find(r => r.userId._id === user._id);
+  if (error || !event) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7] px-6 text-center">
+        <div className="bg-red-50 text-red-600 p-8 rounded-3xl max-w-lg w-full">
+          <h2 className="text-2xl font-bold mb-4">Oops! Event Not Found</h2>
+          <p className="mb-6 opacity-80">{error || "The event you are looking for does not exist or has been removed."}</p>
+          <button 
+            onClick={() => navigate("/events")}
+            className="px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition"
+          >
+            Browse All Events
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="container mx-auto p-4 md:p-8">
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-        <button onClick={() => navigate(-1)} className="text-indigo-600 hover:text-indigo-800 mb-4">
-          &larr; Back
-        </button>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">{event.privacy}</span>
-                <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">upcoming</span>
-              </div>
-              <button className="text-gray-500 hover:text-gray-700">
-                {/* Share Icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.002l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
-              </button>
-            </div>
-            <h1 className="text-3xl font-bold mt-2">{event.title}</h1>
-            <p className="text-gray-600 mt-1">Hosted by {event.host?.name || 'Unknown'}</p>
-            <div className="flex flex-wrap text-gray-500 mt-4 gap-x-6 gap-y-2">
-              <p>🗓️ {formatDate(event.start)}</p>
-              <p>📍 {event.location.address}</p>
-              <p>👥 {rsvps.length}/{event.capacity || 'Unlimited'}</p>
-            </div>
-            <p className="mt-4 text-gray-700">{event.description}</p>
-
-            {/* Tabs */}
-            <div className="border-b border-gray-200 mt-6">
-              <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-                <button onClick={() => setActiveTab('discussion')} className={`${activeTab === 'discussion' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}>
-                  Discussion
-                </button>
-                <button onClick={() => setActiveTab('attendees')} className={`${activeTab === 'attendees' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}>
-                  Attendees
-                </button>
-                <button onClick={() => setActiveTab('updates')} className={`${activeTab === 'updates' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}>
-                  Updates
-                </button>
-              </nav>
-            </div>
-
-            {/* Tab Content */}
-            <div className="mt-6">
-              {activeTab === 'discussion' && (
-                <div>
-                  <form onSubmit={handlePostComment}>
-                    <textarea
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                      placeholder="Join the conversation..."
-                      className="w-full p-2 border rounded-md"
-                      rows="3"
-                    ></textarea>
-                    <button type="submit" className="mt-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-                      Post Comment
-                    </button>
-                  </form>
-                  <div className="mt-6 space-y-4">
-                    {comments.length > 0 ? comments.map(c => (
-                      <div key={c._id} className="flex space-x-3">
-                        {/* Avatar placeholder */}
-                        <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">
-                          {c.user?.name.charAt(0) || 'A'}
-                        </div>
-                        <div>
-                          <p className="font-semibold">{c.user?.name || 'Anonymous'}</p>
-                          <p>{c.text}</p>
-                          <p className="text-xs text-gray-500 mt-1">{formatDate(c.createdAt)}</p>
-                        </div>
-                      </div>
-                    )) : <p>No comments yet.</p>}
-                  </div>
+    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-10">
+      <ToastContainer position="top-right" autoClose={3000} />
+      
+      {/* Hero Header */}
+      <div className="relative h-96 w-full bg-gray-900 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-gray-900/80 z-10"></div>
+        <div className="absolute inset-0 z-0 opacity-40 bg-[url('https://source.unsplash.com/random/1600x900/?event,party')] bg-cover bg-center"></div>
+        
+        <div className="absolute inset-0 z-20 flex flex-col justify-end container mx-auto px-6 pb-12">
+          <div className="max-w-4xl">
+             <span className="inline-block px-4 py-1.5 rounded-full bg-teal-500/20 border border-teal-500/30 text-teal-200 font-semibold text-sm mb-4 backdrop-blur-sm">
+                {event.privacy === 'public' ? 'Public Event' : 'Private Event'}
+             </span>
+             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
+               {event.title}
+             </h1>
+             <div className="flex flex-wrap gap-6 text-gray-300 text-lg">
+                <div className="flex items-center gap-2">
+                   <FaCalendarAlt className="text-teal-400" /> {formatDate(event.start)}
                 </div>
-              )}
-              {activeTab === 'attendees' && (
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div className="bg-green-100 p-4 rounded-lg">
-                      <p className="text-2xl font-bold text-green-800">{rsvpCounts.yes}</p>
-                      <p className="text-green-700">Attending</p>
-                    </div>
-                    <div className="bg-yellow-100 p-4 rounded-lg">
-                      <p className="text-2xl font-bold text-yellow-800">{rsvpCounts.maybe}</p>
-                      <p className="text-yellow-700">Maybe</p>
-                    </div>
-                    <div className="bg-red-100 p-4 rounded-lg">
-                      <p className="text-2xl font-bold text-red-800">{rsvpCounts.no}</p>
-                      <p className="text-red-700">Can't Attend</p>
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-semibold mt-6 mb-4">RSVP Responses</h3>
-                  <div className="space-y-4">
-                    {rsvps.map(r => (
-                      <div key={r._id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">
-                              {r.userId.name.charAt(0)}
-                          </div>
-                          <div>
-                            <p className="font-semibold">{r.userId.name}</p>
-                            <p className="text-sm text-gray-500">{r.userId.email}</p>
-                          </div>
-                        </div>
-                        <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
-                          r.status === 'yes' ? 'bg-green-200 text-green-800' :
-                          r.status === 'maybe' ? 'bg-yellow-200 text-yellow-800' :
-                          'bg-red-200 text-red-800'
-                        }`}>
-                          {r.status}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="flex items-center gap-2">
+                   <FaClock className="text-teal-400" /> {formatTime(event.start)} - {formatTime(event.end)}
                 </div>
-              )}
-              {activeTab === 'updates' && (
-                <div className="text-center py-10">
-                  <p className="text-gray-500">No updates yet.</p>
+                <div className="flex items-center gap-2">
+                   <FaMapMarkerAlt className="text-teal-400" /> {event.location?.address || "Online Event"}
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="font-bold text-lg">RSVP Status</h3>
-              <div className="grid grid-cols-3 gap-2 mt-4">
-                <button onClick={() => handleRsvp('yes')} className={`p-2 rounded-md text-center border-2 ${userRsvp?.status === 'yes' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:bg-gray-50'}`}>Yes ({rsvpCounts.yes})</button>
-                <button onClick={() => handleRsvp('maybe')} className={`p-2 rounded-md text-center border-2 ${userRsvp?.status === 'maybe' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-200 hover:bg-gray-50'}`}>Maybe ({rsvpCounts.maybe})</button>
-                <button onClick={() => handleRsvp('no')} className={`p-2 rounded-md text-center border-2 ${userRsvp?.status === 'no' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:bg-gray-50'}`}>No ({rsvpCounts.no})</button>
-              </div>
-              {userRsvp && <p className="text-center mt-3 text-sm text-gray-600">You responded: <span className="font-semibold">{userRsvp.status}</span></p>}
-            </div>
-
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h3 className="font-bold text-lg">Event Card Preview</h3>
-              <div className="mt-4 border-t pt-4">
-                  <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">{event.privacy}</span>
-                  <h4 className="font-semibold mt-2">{event.title}</h4>
-                  <p className="text-sm text-gray-500">{formatDate(event.start)}</p>
-                  <p className="text-sm text-gray-500">📍 {event.location.address}</p>
-                  <p className="text-sm text-gray-500">👥 Hosted by {event.host?.name || 'Unknown'}</p>
-                  <div className="text-sm mt-2">
-                    <span className="text-green-600">● {rsvpCounts.yes} Yes</span>
-                    <span className="text-yellow-600 ml-2">● {rsvpCounts.maybe} Maybe</span>
-                    <span className="text-red-600 ml-2">● {rsvpCounts.no} No</span>
-                  </div>
-                  <button className="w-full mt-4 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">View Details</button>
-              </div>
-            </div>
+             </div>
           </div>
         </div>
       </div>
-       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200">
-        <div className="container mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-400 to-teal-600 flex items-center justify-center text-white shadow-lg">
-                  📅
+
+      <div className="container mx-auto px-6 py-12 flex-1">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-12">
+            
+            {/* Tabs Navigation */}
+            <div className="flex gap-8 border-b border-gray-200">
+               {['about', 'agenda', 'discussion', 'polls', 'attendees'].map((tab) => (
+                 <button
+                   key={tab}
+                   onClick={() => setActiveTab(tab)}
+                   className={`pb-4 text-lg font-bold capitalize transition-all relative ${
+                     activeTab === tab 
+                     ? "text-teal-600 after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-teal-600 after:rounded-t-full" 
+                     : "text-gray-400 hover:text-gray-600"
+                   }`}
+                 >
+                   {tab}
+                 </button>
+               ))}
+            </div>
+
+            {/* Tab Content */}
+            <div className="min-h-[400px]">
+              {activeTab === 'about' && (
+                <div className="animate-fade-in">
+                   <h3 className="text-2xl font-bold text-gray-900 mb-6">About this Event</h3>
+                   <div className="prose prose-lg text-gray-600 leading-relaxed max-w-none mb-8">
+                      {event.description}
+                   </div>
+
+                   {/* Ticket Section if Price > 0 */}
+                   {event.price > 0 && (
+                       <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border border-indigo-100 flex justify-between items-center mb-8">
+                           <div>
+                               <div className="text-sm font-bold text-indigo-900 uppercase tracking-wide mb-1">Standard Ticket</div>
+                               <div className="text-3xl font-bold text-indigo-700">₹{event.price}</div>
+                           </div>
+                           <button 
+                               onClick={() => setShowPaymentModal(true)}
+                               className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 transition transform hover:scale-105"
+                           >
+                               Buy Ticket
+                           </button>
+                       </div>
+                   )}
+                   
+                   {event.tags && event.tags.length > 0 && (
+                     <div className="pt-8 border-t border-gray-100">
+                        <h4 className="font-bold text-gray-900 mb-4">Tags</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {event.tags.map(tag => (
+                            <span key={tag} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-teal-50 hover:text-teal-600 transition-colors cursor-default">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                     </div>
+                   )}
                 </div>
-                <h3 className="font-semibold text-xl text-gray-800">
-                  EventHub
-                </h3>
-              </div>
-              <p className="text-gray-600 leading-relaxed">
-                Creating amazing event experiences through innovative design and
-                technology.
-              </p>
+              )}
+
+              {activeTab === 'agenda' && (
+                  <div className="animate-fade-in">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Agenda</h3>
+                      <Timeline eventId={event._id} isOrganizer={event.host?._id === user?._id} user={user} />
+                  </div>
+              )}
+
+              {activeTab === 'discussion' && (
+                <div className="animate-fade-in">
+                   <EventDiscuss eventId={event._id} />
+                </div>
+              )}
+
+              {activeTab === 'polls' && (
+                 <div className="animate-fade-in">
+                    <EventPolls eventId={event._id} isHost={event.host?._id === user?._id} />
+                 </div>
+              )}
+
+              {activeTab === 'attendees' && (
+                <div className="animate-fade-in">
+                   <h3 className="text-2xl font-bold text-gray-900 mb-6">Attendees ({event.attendees?.length || 0})</h3>
+                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                      {event.attendees?.map((att, idx) => (
+                        <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition">
+                           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-emerald-500 mb-4 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-teal-500/20">
+                              {att.name?.[0] || "G"}
+                           </div>
+                           <h4 className="font-bold text-gray-900">{att.name}</h4>
+                           <span className="text-sm text-teal-600 mt-1">Going</span>
+                        </div>
+                      ))}
+                   </div>
+                   {(!event.attendees || event.attendees.length === 0) && (
+                      <p className="text-gray-500 italic">No attendees yet.</p>
+                   )}
+                </div>
+              )}
             </div>
 
-            <div>
-              <h4 className="font-bold text-gray-800 mb-6 text-lg">Product</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Event Manager
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Pricing
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Templates
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Integrations
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-gray-800 mb-6 text-lg">Company</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-gray-800 mb-6 text-lg">Support</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Help Center
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Community
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-                  >
-                    Status
-                  </a>
-                </li>
-              </ul>
-            </div>
           </div>
 
-          <div className="border-t border-slate-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-600">
-              © 2025 EventHub. All rights reserved.
-            </div>
-            <div className="flex gap-8 mt-4 md:mt-0">
-              <a
-                href="#"
-                className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-              >
-                Privacy
-              </a>
-              <a
-                href="#"
-                className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-              >
-                Terms
-              </a>
-              <a
-                href="#"
-                className="text-gray-600 hover:text-teal-600 transition-colors duration-200"
-              >
-                Cookies
-              </a>
-            </div>
+          {/* Sidebar */}
+          <div className="space-y-8">
+             {/* RSVP Card */}
+             <div className="bg-white p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 sticky top-24">
+                <h3 className="text-xl font-bold text-gray-900 mb-6">Are you going?</h3>
+                
+                <div className="flex gap-2 mb-6">
+                  {['yes', 'no', 'maybe'].map((status) => (
+                    <button
+                      key={status}
+                      onClick={() => handleRSVP(status)}
+                      className={`flex-1 py-3 rounded-xl font-bold capitalize transition-all transform hover:scale-105 ${
+                        userResponse === status
+                          ? "bg-teal-600 text-white shadow-lg shadow-teal-500/30 ring-2 ring-teal-600 ring-offset-2"
+                          : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                      }`}
+                    >
+                      {status}
+                    </button>
+                  ))}
+                </div>
+
+                {/* RSVP Stats */}
+                {event.rsvpCounts && (
+                  <div className="bg-gray-50 rounded-xl p-4 mb-6 flex justify-between text-center">
+                    <div>
+                      <div className="text-xl font-bold text-gray-900">{event.rsvpCounts.yes}</div>
+                      <div className="text-xs font-bold text-gray-500 uppercase">Going</div>
+                    </div>
+                    <div>
+                      <div className="text-xl font-bold text-gray-900">{event.rsvpCounts.maybe}</div>
+                      <div className="text-xs font-bold text-gray-500 uppercase">Maybe</div>
+                    </div>
+                    <div>
+                      <div className="text-xl font-bold text-gray-900">{event.rsvpCounts.no}</div>
+                      <div className="text-xs font-bold text-gray-500 uppercase">No</div>
+                    </div>
+                  </div>
+                )}
+
+                {(event.format === 'virtual' || event.format === 'hybrid') && isAttending && (
+                   <button 
+                     onClick={() => navigate(`/event/${event._id}/lobby`)}
+                     className="w-full py-3 mb-6 bg-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 hover:bg-red-700 transition flex items-center justify-center gap-2"
+                   >
+                      <FaVideo /> Enter Virtual Venue
+                   </button>
+                )}
+                
+                <div className="space-y-4 text-gray-600">
+                   <div className="flex items-center justify-between py-3 border-b border-gray-50">
+                      <span className="flex items-center gap-2"><FaUsers className="text-teal-500"/> Spots</span>
+                      <span className="font-semibold">Unlimited</span>
+                   </div>
+                   <div className="flex items-center justify-between py-3 border-b border-gray-50">
+                      <span className="flex items-center gap-2"><FaShareAlt className="text-teal-500"/> Share</span>
+                      <div className="flex gap-2">
+                         <button 
+                             onClick={() => {
+                                 if (navigator.share) {
+                                     navigator.share({
+                                         title: event.title,
+                                         text: `Check out this event: ${event.title}`,
+                                         url: window.location.href,
+                                     }).catch(console.error);
+                                 } else {
+                                     navigator.clipboard.writeText(window.location.href);
+                                     toast.info("Link copied to clipboard!");
+                                 }
+                             }}
+                             className="w-8 h-8 rounded-full bg-gray-100 hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
+                             title="Share"
+                         >
+                            <FaShareAlt />
+                         </button>
+                      </div>
+                   </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-gray-100">
+                   <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+                         <div className="w-full h-full bg-gradient-to-br from-orange-400 to-pink-500"></div>
+                      </div>
+                      <div className="flex-1">
+                         <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Hosted by</p>
+                         <div className="flex justify-between items-center">
+                            <p className="font-bold text-gray-900">{event.host?.name || "Event Organizer"}</p>
+                            {/* Subscribe Button */}
+                            {user && event.host?._id !== user._id && (
+                                <button 
+                                    onClick={handleSubscribe} 
+                                    disabled={isSubscribed}
+                                    className={`ml-2 text-xs font-bold px-3 py-1 rounded-full transition ${isSubscribed ? 'bg-gray-100 text-gray-500 cursor-default' : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'}`}
+                                >
+                                    {isSubscribed ? "Subscribed" : "+ Subscribe"}
+                                </button>
+                            )}
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             
+             {/* Map / Location Card */}
+             {event.location?.address && (
+                <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 opacity-90">
+                   <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <FaMapMarkerAlt className="text-red-500" /> Location
+                   </h3>
+                   <div className="aspect-video bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-gray-400 relative overflow-hidden group cursor-pointer">
+                      <span className="group-hover:scale-110 transition-transform">Map View Placeholder</span>
+                      <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
+                   </div>
+                   <p className="text-gray-600 font-medium leading-relaxed">
+                      {event.location.address}
+                   </p>
+                </div>
+             )}
           </div>
+
         </div>
-      </footer>
+      </div>
+      
+      <Footer />
+      
+      <PaymentModal 
+          isOpen={showPaymentModal} 
+          onClose={() => setShowPaymentModal(false)}
+          event={event}
+          ticketType="Standard"
+          price={event.price || 0}
+          onSuccess={handleTicketSuccess}
+      />
     </div>
   );
 }
-
-

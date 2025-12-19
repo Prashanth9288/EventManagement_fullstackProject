@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+:root {
+  /* Premium Palette from Mockups */
+  --color-bg-base: #F8FAF5; /* Soft Minty Cream */
+  --color-primary: #00BFA5; /* Vibrant Teal */
+  --color-secondary: #FF9F1C; /* Warm Orange */
+  --color-accent-blue: #00A6FB; /* Sky Blue */
+  
+  --color-text-main: #111827; /* Gray 900 */
+  --color-text-muted: #4B5563; /* Gray 600 */
+
+  --font-family-base: "Outfit", "Inter", sans-serif;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg-base);
+  color: var(--color-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@theme {
+   --color-brand-cream: #F8FAF5;
+   --color-brand-teal: #00BFA5;
+   --color-brand-orange: #FF9F1C;
+   --color-brand-blue: #00A6FB;
+}
