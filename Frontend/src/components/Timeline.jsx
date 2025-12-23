@@ -16,7 +16,7 @@ export default function Timeline({ eventId, isOrganizer, user }) {
 
   const fetchSessions = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${eventId}/sessions`);
+      const res = await fetch(`${window.API_BASE_URL}/api/events/${eventId}/sessions`);
       if (res.ok) {
         const data = await res.json();
         setSessions(data);
@@ -35,7 +35,7 @@ export default function Timeline({ eventId, isOrganizer, user }) {
               toast.error("Please login to bookmark sessions");
               return;
           }
-          const res = await fetch(`http://localhost:5000/api/sessions/${sessionId}/bookmark`, {
+          const res = await fetch(`${window.API_BASE_URL}/api/sessions/${sessionId}/bookmark`, {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${token}` }
           });

@@ -271,7 +271,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPopularEvents = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/events");
+        const response = await fetch(window.API_BASE_URL + "/api/events");
         if (!response.ok) {
           throw new Error("Failed to fetch events");
         }

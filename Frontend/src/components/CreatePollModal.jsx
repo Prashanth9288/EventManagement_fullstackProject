@@ -35,7 +35,7 @@ export default function CreatePollModal({ eventId, onClose, onSuccess }) {
           // Simpler: Just emit the socket event. 
           
           if (window.io) {
-              const socket = window.io("http://localhost:5000");
+              const socket = window.io(window.API_BASE_URL + "");
               socket.emit('poll:create', { eventId, question, options });
               socket.disconnect(); // Connect, emit, disconnect (stateless)
               // We need to wait? Socket is fire and forget mostly here. 

@@ -11,7 +11,7 @@ const RSVPDashboard = () => {
         const fetchTickets = async () => {
             try {
                 const token = localStorage.getItem('userToken');
-                const res = await axios.get('http://localhost:5000/api/tickets/my-tickets', {
+                const res = await axios.get(window.API_BASE_URL + '/api/tickets/my-tickets', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setTickets(res.data.tickets);

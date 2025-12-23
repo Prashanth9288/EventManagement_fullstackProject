@@ -32,8 +32,8 @@ export default function NetworkingHub() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [attendeesRes, meRes] = await Promise.all([
-        fetch('http://localhost:5000/api/networking/attendees', { headers }),
-        fetch('http://localhost:5000/api/networking/me', { headers })
+        fetch(window.API_BASE_URL + '/api/networking/attendees', { headers }),
+        fetch(window.API_BASE_URL + '/api/networking/me', { headers })
       ]);
 
       if (attendeesRes.ok) setAttendees(await attendeesRes.json());
@@ -53,7 +53,7 @@ export default function NetworkingHub() {
   const sendConnectionRequest = async (userId) => {
       try {
           const token = localStorage.getItem("userToken");
-          const res = await fetch(`http://localhost:5000/api/networking/connect/${userId}`, {
+          const res = await fetch(`${window.API_BASE_URL}/api/networking/connect/${userId}`, {
               method: 'POST',
               headers: { Authorization: `Bearer ${token}` }
           });
@@ -73,7 +73,7 @@ export default function NetworkingHub() {
   const acceptRequest = async (userId) => {
       try {
           const token = localStorage.getItem("userToken");
-          const res = await fetch(`http://localhost:5000/api/networking/accept/${userId}`, {
+          const res = await fetch(`${window.API_BASE_URL}/api/networking/accept/${userId}`, {
               method: 'POST',
               headers: { Authorization: `Bearer ${token}` }
           });

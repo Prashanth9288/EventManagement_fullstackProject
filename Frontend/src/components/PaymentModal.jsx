@@ -14,7 +14,7 @@ export default function PaymentModal({ isOpen, onClose, event, ticketType, price
       
       // 1. Create Order
       const orderRes = await axios.post(
-        'http://localhost:5000/api/payments/create-order', 
+        window.API_BASE_URL + '/api/payments/create-order', 
         { amount: price, currency: 'INR' }, // Amount in INR
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -37,7 +37,7 @@ export default function PaymentModal({ isOpen, onClose, event, ticketType, price
              
              // 3. Verify Payment
              const verifyRes = await axios.post(
-               'http://localhost:5000/api/payments/verify-payment',
+               window.API_BASE_URL + '/api/payments/verify-payment',
                {
                  razorpay_order_id: response.razorpay_order_id,
                  razorpay_payment_id: response.razorpay_payment_id,

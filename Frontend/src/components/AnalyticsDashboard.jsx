@@ -9,7 +9,7 @@ export default function AnalyticsDashboard({ eventId }) {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("userToken");
-        const res = await fetch(`http://localhost:5000/api/analytics/events/${eventId}`, {
+        const res = await fetch(`${window.API_BASE_URL}/api/analytics/events/${eventId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {

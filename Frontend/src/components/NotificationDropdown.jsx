@@ -24,7 +24,7 @@ export default function NotificationDropdown({ user }) {
     fetchNotifications();
 
     if (window.io) {
-        const socket = window.io("http://localhost:5000"); // Ensure this matches backend URL
+        const socket = window.io(window.API_BASE_URL + ""); // Ensure this matches backend URL
         socket.emit('join', { userId: user.id || user._id }); // Ensure we join user room logic if needed, though 'notification:userId' might be global
         
         // Listen format: notification:<userId>
@@ -42,7 +42,7 @@ export default function NotificationDropdown({ user }) {
   const fetchNotifications = async () => {
     try {
         const token = localStorage.getItem("userToken");
-        const res = await axios.get("http://localhost:5000/api/notifications", {
+        const res = await axios.get(window.API_BASE_URL + "/api/notifications", {
             headers: { Authorization: `Bearer ${token}` }
         });
         setNotifications(res.data);
@@ -55,7 +55,7 @@ export default function NotificationDropdown({ user }) {
   const markAsRead = async (id) => {
     try {
         const token = localStorage.getItem("userToken");
-        await axios.put(`http://localhost:5000/api/notifications/${id}/read`, {}, {
+        await axios.put(`${window.API_BASE_URL}/api/notifications/${id}/read`, {}, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setNotifications(prev => prev.map(n => n._id === id ? { ...n, read: true } : n));

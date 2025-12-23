@@ -39,7 +39,7 @@ const CreateEventWizard = () => {
        const fetchEvent = async () => {
            try {
                const token = localStorage.getItem('userToken');
-               const res = await axios.get(`http://localhost:5000/api/events/${id}`, {
+               const res = await axios.get(`${window.API_BASE_URL}/api/events/${id}`, {
                    headers: { Authorization: `Bearer ${token}` }
                });
                const data = res.data;
@@ -99,13 +99,13 @@ const CreateEventWizard = () => {
 
       if (id) {
           // Update
-          await axios.put(`http://localhost:5000/api/events/${id}`, payload, {
+          await axios.put(`${window.API_BASE_URL}/api/events/${id}`, payload, {
             headers: { Authorization: `Bearer ${token}` }
           });
           alert("Event updated successfully!");
       } else {
           // Create
-          await axios.post('http://localhost:5000/api/events', payload, {
+          await axios.post(window.API_BASE_URL + '/api/events', payload, {
             headers: { Authorization: `Bearer ${token}` }
           });
           alert("Event created successfully!");

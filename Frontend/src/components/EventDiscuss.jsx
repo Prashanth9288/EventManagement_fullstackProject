@@ -21,7 +21,7 @@ export default function EventDiscuss({ eventId }) {
     }
 
     // Connect to Socket
-    socketRef.current = io("http://localhost:5000");
+    socketRef.current = io(window.API_BASE_URL + "");
     
     // Join Event Room
     socketRef.current.emit("join", { eventId });

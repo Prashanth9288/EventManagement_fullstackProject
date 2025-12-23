@@ -47,7 +47,7 @@ export default function CreateEvent() {
       const fetchEvent = async () => {
         try {
           const res = await fetch(
-            `http://localhost:5000/api/events/${eventId}`,
+            `${window.API_BASE_URL}/api/events/${eventId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -125,8 +125,8 @@ export default function CreateEvent() {
       };
 
       const url = eventId
-        ? `http://localhost:5000/api/events/${eventId}`
-        : "http://localhost:5000/api/events";
+        ? `${window.API_BASE_URL}/api/events/${eventId}`
+        : window.API_BASE_URL + "/api/events";
       const method = eventId ? "PUT" : "POST";
 
       const res = await fetch(url, {

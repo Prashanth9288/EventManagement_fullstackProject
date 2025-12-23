@@ -28,7 +28,7 @@ export default function OrganizerDashboard() {
       if(!window.confirm("Are you sure you want to delete this event? This cannot be undone.")) return;
       try {
           const token = localStorage.getItem("userToken");
-          await axios.delete(`http://localhost:5000/api/events/${id}`, {
+          await axios.delete(`${window.API_BASE_URL}/api/events/${id}`, {
               headers: { Authorization: `Bearer ${token}` }
           });
           setEvents(prev => prev.filter(e => e._id !== id));
@@ -44,7 +44,7 @@ export default function OrganizerDashboard() {
       if(!window.confirm("Send email reminders to all attendees of this event?")) return;
       try {
           const token = localStorage.getItem("userToken");
-          const res = await axios.post("http://localhost:5000/api/notifications/send-event-reminder", { eventId }, {
+          const res = await axios.post(window.API_BASE_URL + "/api/notifications/send-event-reminder", { eventId }, {
               headers: { Authorization: `Bearer ${token}` }
           });
           alert(res.data.message);
@@ -68,7 +68,7 @@ export default function OrganizerDashboard() {
 
         // 0. Fetch Full Profile
         try {
-            const userRes = await axios.get("http://localhost:5000/api/auth/profile", { headers });
+            const userRes = await axios.get(window.API_BASE_URL + "/api/auth/profile", { headers });
             setUser(userRes.data);
         } catch(e) {
             console.error("Failed to fetch profile", e);
@@ -76,15 +76,15 @@ export default function OrganizerDashboard() {
         }
 
         // 1. Fetch Events (MY events only)
-        const eventsRes = await axios.get("http://localhost:5000/api/events/my-events", { headers });
+        const eventsRes = await axios.get(window.API_BASE_URL + "/api/events/my-events", { headers });
         setEvents(eventsRes.data.events);
 
         // 2. Fetch Stats
-        const statsRes = await axios.get("http://localhost:5000/api/analytics/organizer/stats", { headers });
+        const statsRes = await axios.get(window.API_BASE_URL + "/api/analytics/organizer/stats", { headers });
         setStats(statsRes.data);
 
         // 3. Fetch Attendees (Lazy load or fetch now? Let's fetch now for simplicity)
-        const attendeesRes = await axios.get("http://localhost:5000/api/analytics/organizer/attendees", { headers });
+        const attendeesRes = await axios.get(window.API_BASE_URL + "/api/analytics/organizer/attendees", { headers });
         setAttendees(attendeesRes.data.attendees);
 
       } catch (err) {
@@ -118,7 +118,7 @@ export default function OrganizerDashboard() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const res = await axios.post("http://localhost:5000/api/upload", formData, {
+        const res = await axios.post(window.API_BASE_URL + "/api/upload", formData, {
             headers: { 
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data" 
@@ -553,7 +553,7 @@ export default function OrganizerDashboard() {
                                 onClick={async () => {
                                     try {
                                         const token = localStorage.getItem("userToken");
-                                        await axios.put("http://localhost:5000/api/auth/profile", {
+                                        await axios.put(window.API_BASE_URL + "/api/auth/profile", {
                                             name: user.name,
                                             email: user.email,
                                             branding: user.branding

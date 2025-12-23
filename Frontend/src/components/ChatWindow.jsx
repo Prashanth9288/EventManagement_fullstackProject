@@ -13,7 +13,7 @@ export default function ChatWindow({ currentUser, otherUser, onClose }) {
     
     // Socket Setup
     if (window.io) {
-        socketRef.current = window.io("http://localhost:5000");
+        socketRef.current = window.io(window.API_BASE_URL + "");
         
         // Join my user room to listen (already done in App typically, but ensuring here)
         socketRef.current.emit("join", { userId: currentUser._id || currentUser.id });
@@ -36,7 +36,7 @@ export default function ChatWindow({ currentUser, otherUser, onClose }) {
   const fetchHistory = async () => {
       try {
           const token = localStorage.getItem("userToken");
-          const res = await axios.get(`http://localhost:5000/api/chat/${otherUser._id}`, {
+          const res = await axios.get(`${window.API_BASE_URL}/api/chat/${otherUser._id}`, {
               headers: { Authorization: `Bearer ${token}` }
           });
           setMessages(res.data);

@@ -18,7 +18,7 @@ const OrganizerEventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         const token = localStorage.getItem("userToken");
-        const res = await axios.get(`http://localhost:5000/api/events/${id}`, {
+        const res = await axios.get(`${window.API_BASE_URL}/api/events/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setEvent(res.data);
@@ -38,7 +38,7 @@ const OrganizerEventDetails = () => {
       if(!window.confirm("Are you sure you want to delete this event? This cannot be undone.")) return;
       try {
           const token = localStorage.getItem("userToken");
-          await axios.delete(`http://localhost:5000/api/events/${id}`, {
+          await axios.delete(`${window.API_BASE_URL}/api/events/${id}`, {
               headers: { Authorization: `Bearer ${token}` }
           });
           alert("Event deleted successfully");
@@ -53,7 +53,7 @@ const OrganizerEventDetails = () => {
       if(!window.confirm("Send email reminders to all attendees of this event?")) return;
       try {
           const token = localStorage.getItem("userToken");
-          const res = await axios.post("http://localhost:5000/api/notifications/send-event-reminder", { eventId: id }, {
+          const res = await axios.post(window.API_BASE_URL + "/api/notifications/send-event-reminder", { eventId: id }, {
               headers: { Authorization: `Bearer ${token}` }
           });
           alert(res.data.message);

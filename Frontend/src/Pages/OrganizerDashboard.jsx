@@ -27,7 +27,7 @@ export default function OrganizerDashboard() {
       if(!window.confirm("Are you sure you want to delete this event? This cannot be undone.")) return;
       try {
           const token = localStorage.getItem("userToken");
-          await axios.delete(`http://localhost:5000/api/events/${id}`, {
+          await axios.delete(`${window.API_BASE_URL}/api/events/${id}`, {
               headers: { Authorization: `Bearer ${token}` }
           });
           setEvents(prev => prev.filter(e => e._id !== id));
@@ -43,7 +43,7 @@ export default function OrganizerDashboard() {
       if(!window.confirm("Send email reminders to all attendees of this event?")) return;
       try {
           const token = localStorage.getItem("userToken");
-          const res = await axios.post("http://localhost:5000/api/notifications/send-event-reminder", { eventId }, {
+          const res = await axios.post(window.API_BASE_URL + "/api/notifications/send-event-reminder", { eventId }, {
               headers: { Authorization: `Bearer ${token}` }
           });
           alert(res.data.message);
@@ -66,15 +66,15 @@ export default function OrganizerDashboard() {
         const headers = { Authorization: `Bearer ${token}` };
 
         // 1. Fetch Events (MY events only)
-        const eventsRes = await axios.get("http://localhost:5000/api/events/my-events", { headers });
+        const eventsRes = await axios.get(window.API_BASE_URL + "/api/events/my-events", { headers });
         setEvents(eventsRes.data.events);
 
         // 2. Fetch Stats
-        const statsRes = await axios.get("http://localhost:5000/api/analytics/organizer/stats", { headers });
+        const statsRes = await axios.get(window.API_BASE_URL + "/api/analytics/organizer/stats", { headers });
         setStats(statsRes.data);
 
         // 3. Fetch Attendees (Lazy load or fetch now? Let's fetch now for simplicity)
-        const attendeesRes = await axios.get("http://localhost:5000/api/analytics/organizer/attendees", { headers });
+        const attendeesRes = await axios.get(window.API_BASE_URL + "/api/analytics/organizer/attendees", { headers });
         setAttendees(attendeesRes.data.attendees);
 
       } catch (err) {

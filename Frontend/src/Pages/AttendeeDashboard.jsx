@@ -21,7 +21,7 @@ export default function AttendeeDashboard() {
            setUser({ name: decoded.name, role: decoded.role });
         }
 
-        const res = await fetch("http://localhost:5000/api/events");
+        const res = await fetch(window.API_BASE_URL + "/api/events");
         const data = await res.json();
         if (res.ok) {
            setEvents(data.events || []);
@@ -36,7 +36,7 @@ export default function AttendeeDashboard() {
     fetchEvents();
 
     if (window.io) {
-      const socket = window.io("http://localhost:5000");
+      const socket = window.io(window.API_BASE_URL + "");
       socket.on("event:new", (newEvent) => {
         setEvents((prev) => [newEvent, ...prev]);
       });

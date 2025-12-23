@@ -54,7 +54,7 @@ export default function EventDetails({ user }) {
     try {
       const token = localStorage.getItem("userToken");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const res = await fetch(`http://localhost:5000/api/events/${id}`, {
+      const res = await fetch(`${window.API_BASE_URL}/api/events/${id}`, {
         headers,
       });
       
@@ -76,7 +76,7 @@ export default function EventDetails({ user }) {
       // Check subscription
       if (token && data.host) {
           const hostId = data.host._id || data.host; // Handle populated or string ID
-          const subRes = await fetch(`http://localhost:5000/api/subscriptions/${hostId}`, { headers });
+          const subRes = await fetch(`${window.API_BASE_URL}/api/subscriptions/${hostId}`, { headers });
           if(subRes.ok) {
               const subData = await subRes.json();
               setIsSubscribed(subData.subscribed);
@@ -114,7 +114,7 @@ export default function EventDetails({ user }) {
         return;
       }
 
-      const res = await fetch(`http://localhost:5000/api/rsvps/${id}`, {
+      const res = await fetch(`${window.API_BASE_URL}/api/rsvps/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +161,7 @@ export default function EventDetails({ user }) {
       }
       try {
         const token = localStorage.getItem("userToken");
-        const res = await fetch('http://localhost:5000/api/subscriptions', {
+        const res = await fetch(window.API_BASE_URL + '/api/subscriptions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({ organizerId: event.host._id })

@@ -11,7 +11,7 @@ export default function EventPolls({ eventId, isHost }) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const s = io("http://localhost:5000");
+    const s = io(window.API_BASE_URL + "");
     setSocket(s);
     s.emit("join", { eventId });
 
@@ -23,7 +23,7 @@ export default function EventPolls({ eventId, isHost }) {
     // Initial fetch
     const fetchPolls = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/polls`);
+            const res = await fetch(`${window.API_BASE_URL}/api/events/${eventId}/polls`);
             const data = await res.json();
             if(res.ok) setPolls(data);
         } catch(err) {

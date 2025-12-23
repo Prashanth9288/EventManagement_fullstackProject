@@ -14,8 +14,8 @@ export default function VirtualLobby() {
     const fetchData = async () => {
       try {
         const [eventRes, sessionRes] = await Promise.all([
-          fetch(`http://localhost:5000/api/events/${id}`),
-          fetch(`http://localhost:5000/api/events/${id}/sessions`)
+          fetch(`${window.API_BASE_URL}/api/events/${id}`),
+          fetch(`${window.API_BASE_URL}/api/events/${id}/sessions`)
         ]);
 
         if (eventRes.ok) setEvent(await eventRes.json());

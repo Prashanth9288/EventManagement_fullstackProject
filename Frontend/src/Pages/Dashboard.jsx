@@ -11,7 +11,7 @@
 //     const fetchEvents = async () => {
 //       try {
 //         const token = localStorage.getItem("userToken");
-//         const res = await axios.get("http://localhost:5000/api/events", {
+//         const res = await axios.get(window.API_BASE_URL + "/api/events", {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         setEvents(res.data.events || []);

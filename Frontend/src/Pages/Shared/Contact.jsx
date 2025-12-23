@@ -26,7 +26,7 @@ export default function Contact() {
     setLoading(true);
     
     try {
-        await axios.post('http://localhost:5000/api/contact', formData);
+        await axios.post(window.API_BASE_URL + '/api/contact', formData);
         toast.success("Message sent successfully! We'll get back to you soon.");
         setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {

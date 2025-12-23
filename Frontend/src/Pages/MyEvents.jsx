@@ -21,7 +21,7 @@ export default function EventsList({ user }) {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/events", {
+        const res = await fetch(window.API_BASE_URL + "/api/events", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -55,7 +55,7 @@ export default function EventsList({ user }) {
     }
     try {
       const token = localStorage.getItem("userToken");
-      const res = await fetch(`http://localhost:5000/api/events/${id}`, {
+      const res = await fetch(`${window.API_BASE_URL}/api/events/${id}`, {
         method: "DELETE",
         headers: {
             Authorization: `Bearer ${token}`
