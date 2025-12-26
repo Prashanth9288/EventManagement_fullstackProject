@@ -27,7 +27,7 @@ export default function Signup() {
     setError("");
 
     try {
-      const res = await fetch(window.API_BASE_URL + "/api/auth/signup", {
+      const res = await fetch(window.API_BASE_URL + "/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
