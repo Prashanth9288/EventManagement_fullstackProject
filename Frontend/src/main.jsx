@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 
 // Global API Configuration
-window.API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+window.API_BASE_URL = import.meta.env.VITE_API_URL || "https://eventmanagement-backend-1-ocyu.onrender.com";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
