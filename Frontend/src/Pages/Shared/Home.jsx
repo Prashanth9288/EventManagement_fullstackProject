@@ -288,7 +288,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FDFDF7] dark:bg-mirage transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[var(--color-bg-base)] dark:bg-mirage transition-colors duration-300">
       {/* Hero Section */}
       <section className="relative px-6 py-12 md:py-20 flex flex-col items-center text-center overflow-hidden">
         {/* Decorative Background Elements */}

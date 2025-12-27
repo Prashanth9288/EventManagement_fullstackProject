@@ -47,7 +47,7 @@ export default function Signup() {
   };
 
   return (
-        <div className="min-h-screen flex items-center justify-center bg-[#FDFDF7] relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-base)] relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl -z-10 -translate-x-1/3 -translate-y-1/3"></div>
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-3xl -z-10 translate-x-1/3 translate-y-1/3"></div>

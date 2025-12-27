@@ -8,7 +8,7 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState({
-    primaryColor: "#3b82f6", // blue-500
+    primaryColor: "#00E676", // Green Accent A400
     secondaryColor: "#10b981", // emerald-500
     fontFamily: "Inter, sans-serif",
     logoUrl: null, // Placeholder for custom logo

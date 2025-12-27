@@ -96,7 +96,7 @@ export default function NetworkingHub() {
   if (loading) return <div className="min-h-screen pt-20 flex justify-center items-center">Loading Network...</div>;
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-10">
+    <div className="min-h-screen bg-[var(--color-bg-base)] flex flex-col pt-10">
       <ToastContainer />
       
       {/* Chat Window Overlay */}

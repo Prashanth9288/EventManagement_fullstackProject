@@ -36,7 +36,7 @@ export default function Features() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-20">
+    <div className="min-h-screen bg-[var(--color-bg-base)] flex flex-col pt-20">
       
       {/* Hero Section */}
       <div className="bg-gray-900 border-b border-gray-100 py-24 relative overflow-hidden">

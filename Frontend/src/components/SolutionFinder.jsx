@@ -76,13 +76,13 @@ export default function SolutionFinder({ isOpen, onClose }) {
       <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-900 to-indigo-900 p-8 text-white relative">
+        <div className="bg-gradient-to-r from-teal-900 to-teal-800 p-8 text-white relative">
             <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white transition">
                 <FaTimes size={24} />
             </button>
             <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">Solution Finder</span>
             <h2 className="text-3xl font-bold">Let's find your perfect solution.</h2>
-            <p className="text-blue-200 mt-2 text-lg">Tell us a bit about yourself so we can tailor the platform for you.</p>
+            <p className="text-teal-100 mt-2 text-lg">Tell us a bit about yourself so we can tailor the platform for you.</p>
             
             {/* Progress Bar */}
             <div className="flex gap-2 mt-8">
@@ -103,21 +103,21 @@ export default function SolutionFinder({ isOpen, onClose }) {
                         onClick={() => handleSelect(currentStepData.key, opt.label)}
                         className={`p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 flex items-center gap-4 group hover:shadow-lg
                             ${selections[currentStepData.key] === opt.label 
-                                ? 'border-indigo-600 bg-indigo-50 shadow-indigo-200' 
-                                : 'border-gray-100 hover:border-indigo-300'
+                                ? 'border-teal-600 bg-teal-50 shadow-teal-200' 
+                                : 'border-gray-100 hover:border-teal-300'
                             }`}
                     >
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl transition-colors
-                             ${selections[currentStepData.key] === opt.label ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-indigo-100 group-hover:text-indigo-600'}
+                             ${selections[currentStepData.key] === opt.label ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-teal-100 group-hover:text-teal-600'}
                         `}>
                             {opt.icon}
                         </div>
                         <div>
-                            <h4 className={`font-bold text-lg ${selections[currentStepData.key] === opt.label ? 'text-indigo-900' : 'text-gray-900'}`}>{opt.label}</h4>
+                            <h4 className={`font-bold text-lg ${selections[currentStepData.key] === opt.label ? 'text-teal-900' : 'text-gray-900'}`}>{opt.label}</h4>
                             {opt.desc && <p className="text-sm text-gray-500 mt-1">{opt.desc}</p>}
                         </div>
                         {selections[currentStepData.key] === opt.label && (
-                            <div className="ml-auto text-indigo-600">
+                            <div className="ml-auto text-teal-600">
                                 <FaCheckCircle size={24} />
                             </div>
                         )}
@@ -142,7 +142,7 @@ export default function SolutionFinder({ isOpen, onClose }) {
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold transition-all shadow-lg
                     ${!selections[currentStepData.key] 
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                        : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-500/30 hover:scale-105'
+                        : 'bg-teal-600 text-white hover:bg-teal-700 shadow-teal-500/30 hover:scale-105'
                     }`}
             >
                 {step === 3 ? 'View My Solutions' : 'Next Step'} <FaArrowRight />

@@ -156,7 +156,7 @@ export default function OrganizerDashboard() {
   );
 
   return (
-    <div className="flex h-screen bg-[#F3F4F6] dark:bg-mirage overflow-hidden font-sans transition-colors duration-300">
+    <div className="flex h-screen bg-[var(--color-bg-base)] dark:bg-mirage overflow-hidden font-sans transition-colors duration-300">
       
       {/* Sidebar */}
       <aside className="w-64 bg-white dark:bg-bluewood border-r border-gray-200 dark:border-fiord flex flex-col z-20 shadow-lg">
@@ -180,7 +180,7 @@ export default function OrganizerDashboard() {
             </div>
         </div>
 
-        <div className="p-4 border-t border-gray-100 dark:border-fiord bg-gray-50 dark:bg-mirage/50 space-y-3">
+        <div className="p-4 border-t border-gray-100 dark:border-fiord bg-[var(--color-bg-base)]/50 dark:bg-mirage/50 space-y-3">
              <Link to="/dashboard" className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
                 <FaCompass /> Switch to Attendee View
              </Link>
@@ -259,7 +259,7 @@ export default function OrganizerDashboard() {
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left">
-                                <thead className="bg-gray-50 dark:bg-fiord/30 text-gray-500 dark:text-lynch text-xs uppercase font-bold">
+                                <thead className="bg-[var(--color-bg-base)] dark:bg-fiord/30 text-gray-500 dark:text-lynch text-xs uppercase font-bold">
                                     <tr>
                                         <th className="px-6 py-4">Event Name</th>
                                         <th className="px-6 py-4">Date</th>
@@ -348,7 +348,7 @@ export default function OrganizerDashboard() {
                                  </Link>
 
                                  {/* Engagement Actions */}
-                                 <div className="flex bg-gray-50 rounded-lg p-1 border border-gray-200">
+                                 <div className="flex bg-[var(--color-bg-base)] rounded-lg p-1 border border-gray-200">
                                      <button 
                                         onClick={() => setSelectedEventId(event._id) || setShowPollModal(true)}
                                         className="p-2 text-indigo-600 hover:bg-white rounded-md transition flex items-center gap-1 text-xs font-bold"
@@ -438,7 +438,7 @@ export default function OrganizerDashboard() {
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Email Campaigns</h2>
                         <p className="text-gray-500 dark:text-lynch mb-8">Send updates, reminders, and newsletters to your audience.</p>
                         
-                        <div className="text-left max-w-lg mx-auto bg-gray-50 dark:bg-mirage p-6 rounded-xl">
+                        <div className="text-left max-w-lg mx-auto bg-[var(--color-bg-base)] dark:bg-mirage p-6 rounded-xl">
                             <label className="block text-sm font-bold text-gray-700 dark:text-casper mb-2">Select Event to Blast</label>
                             <select 
                                 className="w-full p-3 border border-gray-300 dark:border-fiord rounded-lg mb-4 bg-white dark:bg-bluewood text-gray-900 dark:text-white"
@@ -548,7 +548,7 @@ export default function OrganizerDashboard() {
                                         name="themeColor"
                                         type="color" 
                                         className="invisible w-0 h-0 absolute"
-                                        value={user.branding?.themeColor || "#3B82F6"}
+                                        value={user.branding?.themeColor || "#009688"}
                                         onChange={(e) => setUser(prev => ({...prev, branding: {...prev.branding, themeColor: e.target.value}}))}
                                     />
                                     <div 

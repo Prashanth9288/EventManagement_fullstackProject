@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Palette from Mockups */
-  --color-bg-base: #f8faf5; /* Soft Minty Cream */
-  --color-primary: #00bfa5; /* Vibrant Teal */
-  --color-secondary: #ff9f1c; /* Warm Orange */
-  --color-accent-blue: #00a6fb; /* Sky Blue */
+  /* Premium Palette - GREEN ACCENT THEME (A200, A400, A700) */
+  --color-bg-base: #f0fdf4; /* Green 50 - Fresh Light Base (Minty) */
+  --color-primary: #00E676; /* Green A400 - Main Brand */
+  --color-secondary: #00C853; /* Green A700 - Darker Accent */
+  --color-accent-pop: #69F0AE; /* Green A200 - Pops/Highlights */
 
   --color-text-main: #111827; /* Gray 900 */
   --color-text-muted: #4b5563; /* Gray 600 */
@@ -22,15 +22,80 @@ body {
 }
 
 @theme {
-  --color-brand-cream: #f8faf5;
-  --color-brand-teal: #00bfa5;
-  --color-brand-orange: #ff9f1c;
-  --color-brand-blue: #00a6fb;
+  --color-brand-cream: #f6fbf9;
+  --color-brand-teal: #00E676; /* Mapping Brand Teal to Green A400 */
+  
+  /* 
+     Material Green Accent Palette 
+     Mapped to fill the 50-950 scale for Tailwind Compatibility
+  */
+  --color-teal-50: #E8F5E9;  /* Light Mint */
+  --color-teal-100: #C8E6C9;
+  --color-teal-200: #A5D6A7;
+  --color-teal-300: #69F0AE; /* A200 - Highlight */
+  --color-teal-400: #00E676; /* A400 - PRIMARY */
+  --color-teal-500: #00E676; /* A400 - PRIMARY (Main) */
+  --color-teal-600: #00C853; /* A700 - Stronger */
+  --color-teal-700: #00B140; /* Deepened A700 */
+  --color-teal-800: #009624; 
+  --color-teal-900: #00600F;
+  --color-teal-950: #003300;
 
-  /* Dark Mode Premium Palette */
-  --color-mirage: #1d243a;
-  --color-bluewood: #2f3b5b;
-  --color-fiord: #4b4e77;
-  --color-lynch: #7884a5;
-  --color-casper: #b2c1d2;
+  /* Override Indigo (Brand) to Green Accent */
+  --color-indigo-50: var(--color-teal-50);
+  --color-indigo-100: var(--color-teal-100);
+  --color-indigo-200: var(--color-teal-200);
+  --color-indigo-300: var(--color-teal-300);
+  --color-indigo-400: var(--color-teal-400);
+  --color-indigo-500: var(--color-teal-500);
+  --color-indigo-600: var(--color-teal-600);
+  --color-indigo-700: var(--color-teal-700);
+  --color-indigo-800: var(--color-teal-800);
+  --color-indigo-900: var(--color-teal-900);
+  --color-indigo-950: var(--color-teal-950);
+
+  /* Override Primary to Green Accent */
+  --color-primary-50: var(--color-teal-50);
+  --color-primary-100: var(--color-teal-100);
+  --color-primary-200: var(--color-teal-200);
+  --color-primary-300: var(--color-teal-300);
+  --color-primary-400: var(--color-teal-400);
+  --color-primary-500: var(--color-teal-500);
+  --color-primary-600: var(--color-teal-600);
+  --color-primary-700: var(--color-teal-700);
+  --color-primary-800: var(--color-teal-800);
+  --color-primary-900: var(--color-teal-900);
+  --color-primary-950: var(--color-teal-950);
+
+  /* Override Blue/Sky to Green (Consistency) */
+  --color-blue-50: var(--color-bg-base);
+  --color-blue-100: var(--color-teal-100);
+  --color-blue-200: var(--color-teal-200);
+  --color-blue-300: var(--color-teal-300);
+  --color-blue-400: var(--color-teal-400);
+  --color-blue-500: var(--color-teal-500);
+  --color-blue-600: var(--color-teal-600);
+  --color-blue-700: var(--color-teal-700);
+  --color-blue-800: var(--color-teal-800);
+  --color-blue-900: var(--color-teal-900);
+  --color-blue-950: var(--color-teal-950);
+
+  --color-sky-50: var(--color-teal-50);
+  --color-sky-100: var(--color-teal-100);
+  --color-sky-200: var(--color-teal-200);
+  --color-sky-300: var(--color-teal-300);
+  --color-sky-400: var(--color-teal-400);
+  --color-sky-500: var(--color-teal-500);
+  --color-sky-600: var(--color-teal-600);
+  --color-sky-700: var(--color-teal-700);
+  --color-sky-800: var(--color-teal-800);
+  --color-sky-900: var(--color-teal-900);
+  --color-sky-950: var(--color-teal-950);
+
+  /* Dark Mode Premium Palette (Unchanged but ensuring contrast with green) */
+  --color-mirage: #0f172a; /* Slate 900 - Slightly darker for pop */
+  --color-bluewood: #1e293b; /* Slate 800 */
+  --color-fiord: #334155; /* Slate 700 */
+  --color-lynch: #94a3b8; /* Slate 400 */
+  --color-casper: #cbd5e1; /* Slate 300 */
 }

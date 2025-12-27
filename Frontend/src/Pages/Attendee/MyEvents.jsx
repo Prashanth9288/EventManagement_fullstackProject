@@ -99,20 +99,20 @@ export default function EventsList({ user }) {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage flex flex-col items-center justify-center transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage flex flex-col items-center justify-center transition-colors duration-300">
         <div className="w-12 h-12 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin mb-4"></div>
         <p className="text-gray-500 dark:text-lynch">Loading your events...</p>
     </div>
   );
   
   if (error) return (
-    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage flex items-center justify-center transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage flex items-center justify-center transition-colors duration-300">
         <p className="text-red-500 bg-red-50 dark:bg-red-900/20 px-6 py-4 rounded-xl border border-red-100 dark:border-red-900/30">{error}</p>
     </div>
   );
 
   return (
-    <div className="bg-[#FDFDF7] dark:bg-mirage min-h-screen pt-28 pb-12 transition-colors duration-300">
+    <div className="bg-[var(--color-bg-base)] dark:bg-mirage min-h-screen pt-28 pb-12 transition-colors duration-300">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         

@@ -72,7 +72,7 @@ export default function AIChatbot() {
     return (
       <button
         onClick={toggleChat}
-        className="fixed bottom-4 right-4 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 hover:scale-110 transition-all z-50 animate-bounce-slow"
+        className="fixed bottom-4 right-4 bg-teal-600 text-white p-4 rounded-full shadow-lg hover:bg-teal-700 hover:scale-110 transition-all z-50 animate-bounce-slow"
         title="AI Assistant"
       >
         <FaRobot size={24} />
@@ -83,10 +83,10 @@ export default function AIChatbot() {
   return (
     <div className="fixed bottom-4 right-4 w-80 md:w-96 bg-white dark:bg-bluewood rounded-2xl shadow-2xl border border-gray-200 dark:border-fiord flex flex-col z-50 overflow-hidden animate-slide-up font-sans">
       {/* Header */}
-      <div className="bg-indigo-600 p-4 text-white flex justify-between items-center shadow-md">
+      <div className="bg-teal-600 p-4 text-white flex justify-between items-center shadow-md">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-10 h-10 rounded-full bg-white text-indigo-600 flex items-center justify-center font-bold text-xl border-2 border-indigo-200">
+            <div className="w-10 h-10 rounded-full bg-white text-teal-600 flex items-center justify-center font-bold text-xl border-2 border-teal-200">
               <FaRobot />
             </div>
             <div className="absolute bottom-0 right-0 text-green-400 text-xs bg-white rounded-full border border-white">
@@ -113,7 +113,7 @@ export default function AIChatbot() {
                 className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm shadow-sm leading-relaxed ${
                   isAi
                     ? "bg-white dark:bg-fiord text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-bluewood rounded-bl-none"
-                    : "bg-indigo-600 text-white rounded-br-none"
+                    : "bg-teal-600 text-white rounded-br-none"
                 }`}
               >
                 {msg.content}
@@ -138,12 +138,12 @@ export default function AIChatbot() {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Ask me anything..."
-          className="flex-1 bg-gray-100 dark:bg-mirage border-none rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition placeholder-gray-400"
+          className="flex-1 bg-gray-100 dark:bg-mirage border-none rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 transition placeholder-gray-400"
         />
         <button
           type="submit"
           disabled={!newMessage.trim()}
-          className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+          className="p-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
         >
           <FaPaperPlane />
         </button>

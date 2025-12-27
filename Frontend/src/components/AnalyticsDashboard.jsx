@@ -32,7 +32,7 @@ export default function AnalyticsDashboard({ eventId }) {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
          <div className="bg-white dark:bg-bluewood p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-fiord flex items-center gap-4">
-             <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold">
+             <div className="w-12 h-12 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400 text-xl font-bold">
                  <FaUsers />
              </div>
              <div>
@@ -55,7 +55,7 @@ export default function AnalyticsDashboard({ eventId }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white dark:bg-bluewood p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-fiord">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                  <FaChartLine className="text-indigo-500"/> Top Sessions (Bookmarks)
+                  <FaChartLine className="text-teal-500"/> Top Sessions (Bookmarks)
               </h3>
               <div className="space-y-4">
                   {stats.sessions.length === 0 && <p className="text-gray-400">No session data yet.</p>}
@@ -63,11 +63,11 @@ export default function AnalyticsDashboard({ eventId }) {
                       <div key={idx} className="relative">
                           <div className="flex justify-between items-center mb-1 relative z-10">
                               <span className="font-medium text-gray-700">{s.title}</span>
-                              <span className="text-sm font-bold text-indigo-600">{s.bookmarks} <FaBookmark className="inline text-xs mb-0.5 ml-1"/></span>
+                              <span className="text-sm font-bold text-teal-600">{s.bookmarks} <FaBookmark className="inline text-xs mb-0.5 ml-1"/></span>
                           </div>
                           <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-indigo-500 rounded-full transition-all duration-1000"
+                                className="h-full bg-teal-500 rounded-full transition-all duration-1000"
                                 style={{ width: `${Math.min(100, (s.bookmarks / (stats.totalAttendees || 1)) * 100)}%` }} // Normalized somewhat
                               ></div>
                           </div>

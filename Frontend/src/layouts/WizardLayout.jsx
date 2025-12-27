@@ -13,7 +13,7 @@ const WizardLayout = ({ title = "Create New Event", step, totalSteps, children }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-mirage flex flex-col font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage flex flex-col font-sans transition-colors duration-300">
       {/* Header with Exit */}
       <div className="bg-white dark:bg-bluewood px-6 py-4 flex justify-between items-center border-b border-gray-100 dark:border-fiord">
          <h1 className="text-xl font-bold text-gray-800 dark:text-white">{title}</h1>
@@ -33,7 +33,7 @@ const WizardLayout = ({ title = "Create New Event", step, totalSteps, children }
                 {/* Connecting Line */}
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 dark:bg-fiord -z-10"></div>
                 <div 
-                    className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-green-500 -z-10 transition-all duration-500"
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-teal-500 -z-10 transition-all duration-500"
                     style={{ width: `${((step - 1) / (totalSteps - 1)) * 100}%` }}
                 ></div>
 
@@ -45,13 +45,13 @@ const WizardLayout = ({ title = "Create New Event", step, totalSteps, children }
                         <div key={s.id} className="flex flex-col items-center bg-white dark:bg-bluewood px-2">
                             <div 
                                 className={`w-10 h-10 rounded-full flex items-center justify-center text-lg border-2 transition-all duration-300
-                                ${isActive ? 'border-green-500 bg-green-500 text-white shadow-lg scale-110' : 
-                                  isCompleted ? 'border-green-500 bg-green-500 text-white' : 'border-gray-300 dark:border-fiord bg-white dark:bg-mirage text-gray-400 dark:text-gray-500'}
+                                ${isActive ? 'border-teal-500 bg-teal-500 text-white shadow-lg scale-110' : 
+                                  isCompleted ? 'border-teal-500 bg-teal-500 text-white' : 'border-gray-300 dark:border-fiord bg-white dark:bg-mirage text-gray-400 dark:text-gray-500'}
                                 `}
                             >
                                 {isCompleted ? <FaCheck /> : s.icon}
                             </div>
-                            <span className={`mt-2 text-sm font-medium ${isActive ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-lynch'}`}>
+                            <span className={`mt-2 text-sm font-medium ${isActive ? 'text-teal-600 dark:text-teal-400' : 'text-gray-500 dark:text-lynch'}`}>
                                 {s.label}
                             </span>
                         </div>

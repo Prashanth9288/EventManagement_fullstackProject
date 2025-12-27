@@ -97,7 +97,7 @@ export default function PaymentModal({ isOpen, onClose, event, ticketType, price
           <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 font-bold">✕</button>
           
           <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+              <div className="w-16 h-16 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
                   <FaLock />
               </div>
               <h2 className="text-2xl font-bold text-gray-900">Secure Payment</h2>
@@ -115,14 +115,14 @@ export default function PaymentModal({ isOpen, onClose, event, ticketType, price
               </div>
               <div className="border-t border-gray-200 my-2 pt-2 flex justify-between">
                   <span className="text-gray-900 font-bold">Total</span>
-                  <span className="text-2xl font-bold text-indigo-600">₹{price}</span>
+                  <span className="text-2xl font-bold text-teal-600">₹{price}</span>
               </div>
           </div>
 
           <button 
               onClick={handlePayment}
               disabled={loading}
-              className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition disabled:opacity-50"
+              className="w-full py-3 bg-teal-600 text-white font-bold rounded-xl shadow-lg hover:bg-teal-700 transition disabled:opacity-50"
           >
               {loading ? 'Processing...' : 'Pay Now'}
           </button>

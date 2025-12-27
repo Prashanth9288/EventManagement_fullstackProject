@@ -37,7 +37,7 @@ const RSVPDashboard = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-mirage py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+        <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
             <div className="max-w-5xl mx-auto">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
@@ -156,7 +156,7 @@ const TicketCard = ({ ticket, isPast }) => {
             </div>
 
             {/* Right Side: QR Code */}
-            <div className="bg-gray-50 dark:bg-mirage p-6 md:p-8 flex flex-col items-center justify-center text-center w-full md:w-48 border-l border-dashed border-gray-200 dark:border-fiord md:border-l-0">
+            <div className="bg-[var(--color-bg-base)] dark:bg-mirage p-6 md:p-8 flex flex-col items-center justify-center text-center w-full md:w-48 border-l border-dashed border-gray-200 dark:border-fiord md:border-l-0">
                 <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-200 dark:border-fiord mb-3">
                     <FaQrcode className="text-6xl text-gray-800" />
                 </div>

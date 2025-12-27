@@ -1,6 +1,7 @@
 // src/pages/Signup.jsx
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Footer from "../../components/Footer";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -47,7 +48,8 @@ export default function Signup() {
   };
 
   return (
-        <div className="min-h-screen flex items-center justify-center bg-[#FDFDF7] dark:bg-mirage relative overflow-hidden transition-colors duration-300">
+        <div className="min-h-screen flex flex-col bg-[var(--color-bg-base)] dark:bg-mirage relative overflow-hidden transition-colors duration-300">
+          <div className="flex-1 flex items-center justify-center relative z-10 p-4">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl -z-10 -translate-x-1/3 -translate-y-1/3"></div>
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-3xl -z-10 translate-x-1/3 translate-y-1/3"></div>
@@ -62,7 +64,7 @@ export default function Signup() {
         </div>
 
         {/* Role Selector */}
-        <div className="flex bg-gray-100 dark:bg-mirage p-1 rounded-xl mb-6">
+        <div className="flex bg-gray-50/50 dark:bg-mirage/50 p-1 rounded-xl mb-6 border border-gray-100 dark:border-fiord">
             <button 
                 type="button"
                 onClick={() => handleRoleChange('user')}
@@ -141,6 +143,8 @@ export default function Signup() {
           </Link>
         </p>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -78,23 +78,23 @@ export default function NotificationDropdown({ user }) {
         </button>
 
         {showNotifs && (
-            <div className="absolute right-0 top-full mt-4 w-80 bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in-up">
-                <div className="px-4 py-3 border-b border-gray-50 flex justify-between items-center bg-gray-50">
-                    <h3 className="font-bold text-gray-800">Notifications</h3>
-                    <span className="text-xs font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full">{unreadCount} New</span>
+            <div className="absolute right-0 top-full mt-4 w-80 bg-white dark:bg-mirage border border-gray-100 dark:border-fiord rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in-up">
+                <div className="px-4 py-3 border-b border-gray-50 dark:border-fiord flex justify-between items-center bg-gray-50 dark:bg-fiord/30">
+                    <h3 className="font-bold text-gray-800 dark:text-white">Notifications</h3>
+                    <span className="text-xs font-bold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-2 py-1 rounded-full">{unreadCount} New</span>
                 </div>
                 <div className="max-h-64 overflow-y-auto">
                     {notifications.length === 0 ? (
-                        <div className="p-6 text-center text-gray-400 text-sm">No notifications yet</div>
+                        <div className="p-6 text-center text-gray-400 dark:text-lynch text-sm">No notifications yet</div>
                     ) : (
                         notifications.map(notif => (
-                            <div key={notif._id} className={`p-4 border-b border-gray-50 hover:bg-gray-50 transition flex gap-3 ${notif.read ? 'opacity-60' : 'bg-blue-50/30'}`}>
-                                <div className="mt-1 text-teal-500">
+                            <div key={notif._id} className={`p-4 border-b border-gray-50 dark:border-fiord hover:bg-gray-50 dark:hover:bg-fiord/30 transition flex gap-3 ${notif.read ? 'opacity-60' : 'bg-teal-50/10 dark:bg-teal-900/10'}`}>
+                                <div className="mt-1 text-teal-500 dark:text-teal-400">
                                     <FaBell />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-800 font-medium">{notif.message}</p>
-                                    <p className="text-[10px] text-gray-400 mt-1">{new Date(notif.createdAt).toLocaleString()}</p>
+                                    <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">{notif.message}</p>
+                                    <p className="text-[10px] text-gray-400 dark:text-lynch mt-1">{new Date(notif.createdAt).toLocaleString()}</p>
                                 </div>
                                 {!notif.read && (
                                     <button onClick={() => markAsRead(notif._id)} title="Mark as read" className="text-gray-400 hover:text-teal-600 self-center">
@@ -105,8 +105,8 @@ export default function NotificationDropdown({ user }) {
                         ))
                     )}
                 </div>
-                <div className="p-2 border-t border-gray-50 text-center">
-                    <button onClick={() => setShowNotifs(false)} className="text-xs font-bold text-gray-500 hover:text-gray-800">Close</button>
+                <div className="p-2 border-t border-gray-50 dark:border-fiord text-center">
+                    <button onClick={() => setShowNotifs(false)} className="text-xs font-bold text-gray-500 dark:text-lynch hover:text-gray-800 dark:hover:text-white">Close</button>
                 </div>
             </div>
         )}

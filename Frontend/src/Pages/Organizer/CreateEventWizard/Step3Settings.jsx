@@ -33,14 +33,14 @@ const Step3Settings = ({ formData, updateFormData, nextStep, prevStep }) => {
           
           <div className="space-y-3">
               {/* Public */}
-              <label className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-all ${privacy === 'public' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-fiord dark:bg-mirage hover:border-purple-200 dark:hover:border-purple-500'}`}>
+              <label className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-all ${privacy === 'public' ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20' : 'border-gray-200 dark:border-fiord dark:bg-mirage hover:border-teal-200 dark:hover:border-teal-500'}`}>
                   <input 
                     type="radio" 
                     name="privacy" 
                     value="public" 
                     checked={privacy === 'public'} 
                     onChange={() => handlePrivacyChange('public')}
-                    className="mt-1 w-5 h-5 text-purple-600 focus:ring-purple-500"
+                    className="mt-1 w-5 h-5 text-teal-600 focus:ring-teal-500"
                   />
                   <div>
                       <div className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
@@ -51,14 +51,14 @@ const Step3Settings = ({ formData, updateFormData, nextStep, prevStep }) => {
               </label>
 
               {/* Private */}
-              <label className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-all ${privacy === 'private' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-fiord dark:bg-mirage hover:border-purple-200 dark:hover:border-purple-500'}`}>
+              <label className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-all ${privacy === 'private' ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20' : 'border-gray-200 dark:border-fiord dark:bg-mirage hover:border-teal-200 dark:hover:border-teal-500'}`}>
                   <input 
                     type="radio" 
                     name="privacy" 
                     value="private" 
                     checked={privacy === 'private'} 
                     onChange={() => handlePrivacyChange('private')}
-                    className="mt-1 w-5 h-5 text-purple-600 focus:ring-purple-500"
+                    className="mt-1 w-5 h-5 text-teal-600 focus:ring-teal-500"
                   />
                   <div>
                       <div className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
@@ -69,14 +69,14 @@ const Step3Settings = ({ formData, updateFormData, nextStep, prevStep }) => {
               </label>
 
               {/* RSVP Only */}
-              <label className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-all ${privacy === 'rsvp' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-fiord dark:bg-mirage hover:border-purple-200 dark:hover:border-purple-500'}`}>
+              <label className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-all ${privacy === 'rsvp' ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20' : 'border-gray-200 dark:border-fiord dark:bg-mirage hover:border-teal-200 dark:hover:border-teal-500'}`}>
                   <input 
                     type="radio" 
                     name="privacy" 
                     value="rsvp" 
                     checked={privacy === 'rsvp'} 
                     onChange={() => handlePrivacyChange('rsvp')}
-                    className="mt-1 w-5 h-5 text-purple-600 focus:ring-purple-500"
+                    className="mt-1 w-5 h-5 text-teal-600 focus:ring-teal-500"
                   />
                   <div>
                       <div className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
@@ -96,7 +96,7 @@ const Step3Settings = ({ formData, updateFormData, nextStep, prevStep }) => {
             value={capacity || ''}
             onChange={handleCapacityChange}
             placeholder="Leave empty for unlimited"
-            className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           />
       </div>
 
@@ -109,7 +109,7 @@ const Step3Settings = ({ formData, updateFormData, nextStep, prevStep }) => {
         </button>
         <button
           onClick={nextStep}
-          className="px-8 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all shadow-md flex items-center gap-2"
+          className="px-8 py-3 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-all shadow-md flex items-center gap-2"
         >
           Next <span className="text-lg">›</span>
         </button>

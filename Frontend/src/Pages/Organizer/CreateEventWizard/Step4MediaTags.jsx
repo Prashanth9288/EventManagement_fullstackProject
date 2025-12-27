@@ -81,19 +81,19 @@ const Step4MediaTags = ({ formData, updateFormData, handleFinalSubmit, prevStep 
                  </div>
              </div>
          ) : (
-             <div className="border-2 border-dashed border-gray-300 dark:border-fiord rounded-xl p-10 flex flex-col items-center justify-center bg-gray-50 dark:bg-bluewood hover:bg-gray-100 dark:hover:bg-mirage transition-colors relative cursor-pointer">
+             <div className="border-2 border-dashed border-gray-300 dark:border-fiord rounded-xl p-10 flex flex-col items-center justify-center bg-[var(--color-bg-base)] dark:bg-bluewood hover:bg-white dark:hover:bg-mirage transition-colors relative cursor-pointer">
                  <input 
                     type="file" 
                     accept="image/*"
                     onChange={handleFileChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                  />
-                 <div className="bg-purple-100 dark:bg-purple-900/30 p-4 rounded-full mb-4">
-                    <FaCloudUploadAlt className="text-purple-600 dark:text-purple-400 text-2xl" />
+                 <div className="bg-teal-100 dark:bg-teal-900/30 p-4 rounded-full mb-4">
+                    <FaCloudUploadAlt className="text-teal-600 dark:text-teal-400 text-2xl" />
                  </div>
                  <p className="text-gray-700 dark:text-gray-300 font-medium">Click or Drag to Upload Banner</p>
                  <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Recommended size: 1200x600px</p>
-                 {uploading && <p className="text-purple-600 dark:text-purple-400 mt-2 font-medium animate-pulse">Uploading...</p>}
+                 {uploading && <p className="text-teal-600 dark:text-teal-400 mt-2 font-medium animate-pulse">Uploading...</p>}
              </div>
          )}
       </div>
@@ -108,7 +108,7 @@ const Step4MediaTags = ({ formData, updateFormData, handleFinalSubmit, prevStep 
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleTagKeyDown}
                 placeholder="Add tags (press Enter to add)..."
-                className="flex-1 px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                className="flex-1 px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
               <button 
                 onClick={() => {
@@ -117,7 +117,7 @@ const Step4MediaTags = ({ formData, updateFormData, handleFinalSubmit, prevStep 
                         setTagInput('');
                     }
                 }}
-                className="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700"
+                className="bg-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-700"
               >
                   Add
               </button>
@@ -125,9 +125,9 @@ const Step4MediaTags = ({ formData, updateFormData, handleFinalSubmit, prevStep 
           
           <div className="flex flex-wrap gap-2 mt-3">
               {tags.map((tag, idx) => (
-                  <span key={idx} className="bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2">
+                  <span key={idx} className="bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2">
                       {tag}
-                      <button onClick={() => removeTag(tag)} className="hover:text-purple-900 dark:hover:text-purple-100"><FaTimes size={12} /></button>
+                      <button onClick={() => removeTag(tag)} className="hover:text-teal-900 dark:hover:text-teal-100"><FaTimes size={12} /></button>
                   </span>
               ))}
           </div>
@@ -142,7 +142,7 @@ const Step4MediaTags = ({ formData, updateFormData, handleFinalSubmit, prevStep 
         </button>
         <button
           onClick={handleFinalSubmit}
-          className="px-8 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all shadow-md flex items-center gap-2"
+          className="px-8 py-3 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-all shadow-md flex items-center gap-2"
         >
           Create Event
         </button>

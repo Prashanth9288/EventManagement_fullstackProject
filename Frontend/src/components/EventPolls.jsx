@@ -50,13 +50,13 @@ export default function EventPolls({ eventId, isHost }) {
 
   return (
     <div className="bg-white dark:bg-bluewood rounded-2xl shadow-sm border border-gray-200 dark:border-fiord p-6 transition-colors duration-300">
-       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2"><FaPoll className="text-indigo-600 dark:text-indigo-400"/> Live Polls</h3>
+       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2"><FaPoll className="text-teal-600 dark:text-teal-400"/> Live Polls</h3>
        
        {isHost && (
-           <div className="mb-8 p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border border-indigo-100 dark:border-indigo-800">
-               <h4 className="font-bold text-indigo-900 dark:text-indigo-300 mb-2">Create a Poll</h4>
+           <div className="mb-8 p-4 bg-teal-50 dark:bg-teal-900/30 rounded-xl border border-teal-100 dark:border-teal-800">
+               <h4 className="font-bold text-teal-900 dark:text-teal-300 mb-2">Create a Poll</h4>
                <input 
-                  className="w-full p-2 mb-2 rounded border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-mirage text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-lynch" 
+                  className="w-full p-2 mb-2 rounded border border-teal-200 dark:border-teal-700 bg-white dark:bg-mirage text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-lynch" 
                   placeholder="Ask a question..."
                   value={newPoll.question}
                   onChange={e => setNewPoll({...newPoll, question: e.target.value})}
@@ -64,7 +64,7 @@ export default function EventPolls({ eventId, isHost }) {
                {newPoll.options.map((opt, i) => (
                    <input 
                       key={i}
-                      className="w-full p-2 mb-2 rounded border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-mirage text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-lynch"
+                      className="w-full p-2 mb-2 rounded border border-teal-200 dark:border-teal-700 bg-white dark:bg-mirage text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-lynch"
                       placeholder={`Option ${i+1}`}
                       value={opt}
                       onChange={e => {
@@ -74,7 +74,7 @@ export default function EventPolls({ eventId, isHost }) {
                       }}
                    />
                ))}
-               <button onClick={handleCreatePoll} className="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700">Launch Poll</button>
+               <button onClick={handleCreatePoll} className="w-full py-2 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700">Launch Poll</button>
            </div>
        )}
 
@@ -89,10 +89,10 @@ export default function EventPolls({ eventId, isHost }) {
                            
                            return (
                                <div key={idx} onClick={() => handleVote(poll._id, idx)} className="relative h-10 bg-gray-100 dark:bg-fiord/30 rounded-lg cursor-pointer overflow-hidden group">
-                                   <div className="absolute top-0 left-0 h-full bg-indigo-200 dark:bg-indigo-600 transition-all duration-500" style={{ width: `${percent}%` }}></div>
+                                   <div className="absolute top-0 left-0 h-full bg-teal-200 dark:bg-teal-600 transition-all duration-500" style={{ width: `${percent}%` }}></div>
                                    <div className="absolute inset-0 flex items-center justify-between px-4 z-10">
                                        <span className="font-medium text-gray-700 dark:text-white drop-shadow-sm">{opt.text}</span>
-                                       <span className="font-bold text-indigo-700 dark:text-indigo-200 drop-shadow-sm">{percent}%</span>
+                                       <span className="font-bold text-teal-700 dark:text-teal-200 drop-shadow-sm">{percent}%</span>
                                    </div>
                                </div>
                            );

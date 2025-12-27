@@ -69,9 +69,9 @@ export default function EventDiscuss({ eventId }) {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Share your thoughts..." 
-                    className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-mirage border border-gray-200 dark:border-fiord rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-mirage/80 dark:text-white dark:placeholder-lynch transition"
+                    className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-mirage border border-gray-200 dark:border-fiord rounded-xl focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-mirage/80 dark:text-white dark:placeholder-lynch transition"
                 />
-                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition" disabled={!newComment}>
+                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-teal-600 hover:bg-teal-50 rounded-lg transition" disabled={!newComment}>
                     <FaPaperPlane />
                 </button>
             </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Footer from "../../components/Footer";
 
 export default function Login({ setUser }) {
   const navigate = useNavigate();
@@ -56,12 +57,13 @@ export default function Login({ setUser }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FDFDF7] dark:bg-mirage relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[var(--color-bg-base)] dark:bg-mirage relative overflow-hidden transition-colors duration-300">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3"></div>
 
-      <div className="bg-white dark:bg-bluewood shadow-xl rounded-3xl p-10 w-full max-w-md border border-gray-100 dark:border-fiord relative z-10 mx-4 transition-all duration-300">
+      <div className="flex-1 flex items-center justify-center relative z-10 p-4">
+      <div className="bg-white dark:bg-bluewood shadow-xl rounded-3xl p-10 w-full max-w-md border border-gray-100 dark:border-fiord transition-all duration-300">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-gradient-to-tr from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg mx-auto mb-4">
             E
@@ -118,6 +120,8 @@ export default function Login({ setUser }) {
           </Link>
         </p>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

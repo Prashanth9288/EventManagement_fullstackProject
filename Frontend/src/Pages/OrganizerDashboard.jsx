@@ -102,7 +102,7 @@ export default function OrganizerDashboard() {
   );
 
   return (
-    <div className="flex h-screen bg-[#F3F4F6] overflow-hidden font-sans">
+    <div className="flex h-screen bg-[var(--color-bg-base)] overflow-hidden font-sans">
       
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col z-20 shadow-lg">

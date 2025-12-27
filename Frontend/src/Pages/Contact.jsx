@@ -30,7 +30,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-20">
+    <div className="min-h-screen bg-[var(--color-bg-base)] flex flex-col pt-20">
       <ToastContainer position="top-right" autoClose={3000} />
       
       {/* Header */}

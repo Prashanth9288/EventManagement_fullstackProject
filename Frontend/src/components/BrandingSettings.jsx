@@ -68,7 +68,7 @@ const BrandingSettings = () => {
           <select
             value={theme.fontFamily}
             onChange={handleFontChange}
-            className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2 border"
+            className="w-full border-gray-300 rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500 text-sm p-2 border"
           >
             <option value="'Inter', sans-serif">Inter</option>
             <option value="'Roboto', sans-serif">Roboto</option>

@@ -64,7 +64,7 @@ export default function Timeline({ eventId, isOrganizer, user }) {
     <div className="space-y-8">
       {Object.entries(groupedSessions).map(([date, daySessions]) => (
         <div key={date} className="animate-fade-in">
-          <h3 className="text-xl font-bold text-gray-800 mb-4 sticky top-0 bg-[#FDFDF7]/95 backdrop-blur-sm py-2 z-10 border-b border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 sticky top-0 bg-[var(--color-bg-base)]/95 backdrop-blur-sm py-2 z-10 border-b border-gray-200">
             {date}
           </h3>
           <div className="space-y-4 ml-4 border-l-2 border-teal-100 pl-6 relative">
@@ -73,7 +73,7 @@ export default function Timeline({ eventId, isOrganizer, user }) {
                return (
                 <div key={session._id} className="relative bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all group">
                   {/* Timeline dot */}
-                  <div className="absolute -left-[31px] top-6 w-4 h-4 rounded-full bg-teal-500 border-4 border-[#FDFDF7]"></div>
+                  <div className="absolute -left-[31px] top-6 w-4 h-4 rounded-full bg-teal-500 border-4 border-[var(--color-bg-base)]"></div>
                   
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex-1">

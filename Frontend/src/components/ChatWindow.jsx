@@ -70,10 +70,10 @@ export default function ChatWindow({ currentUser, otherUser, onClose }) {
   return (
     <div className="fixed bottom-4 right-4 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col z-50 overflow-hidden animate-slide-up">
         {/* Header */}
-        <div className="bg-indigo-600 p-4 text-white flex justify-between items-center shadow-md">
+        <div className="bg-teal-600 p-4 text-white flex justify-between items-center shadow-md">
             <div className="flex items-center gap-3">
                 <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-white text-indigo-600 flex items-center justify-center font-bold">
+                    <div className="w-10 h-10 rounded-full bg-white text-teal-600 flex items-center justify-center font-bold">
                         {otherUser.name[0]}
                     </div>
                     <div className="absolute bottom-0 right-0 text-green-400 text-xs bg-white rounded-full border border-white">
@@ -97,7 +97,7 @@ export default function ChatWindow({ currentUser, otherUser, onClose }) {
                 const isMe = msg.sender === currentUser.id;
                 return (
                     <div key={idx} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm shadow-sm ${isMe ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'}`}>
+                        <div className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm shadow-sm ${isMe ? 'bg-teal-600 text-white rounded-br-none' : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'}`}>
                             {msg.content}
                         </div>
                     </div>
@@ -113,9 +113,9 @@ export default function ChatWindow({ currentUser, otherUser, onClose }) {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..." 
-                className="flex-1 bg-gray-100 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-indigo-500 transition"
+                className="flex-1 bg-gray-100 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-teal-500 transition"
             />
-            <button type="submit" className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition disabled:opacity-50" disabled={!newMessage.trim()}>
+            <button type="submit" className="p-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition disabled:opacity-50" disabled={!newMessage.trim()}>
                 <FaPaperPlane />
             </button>
         </form>

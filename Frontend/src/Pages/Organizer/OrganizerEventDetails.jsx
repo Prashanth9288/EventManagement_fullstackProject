@@ -90,7 +90,7 @@ const OrganizerEventDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-mirage p-8 pt-24 animate-fadeIn transition-colors duration-300"> {/* Added pt-24 as App.jsx Layout handles padding but maybe not for organizer routes? Verified App.jsx: Organizer routes don't have pt-20. So we need padding. */}
+    <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage p-8 pt-24 animate-fadeIn transition-colors duration-300"> {/* Added pt-24 as App.jsx Layout handles padding but maybe not for organizer routes? Verified App.jsx: Organizer routes don't have pt-20. So we need padding. */}
       
       {/* Header & Back Button */}
       <div className="max-w-6xl mx-auto mb-8 flex items-center justify-between">

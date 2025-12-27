@@ -151,7 +151,7 @@ export default function CreateEvent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage relative overflow-hidden flex flex-col transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage relative overflow-hidden flex flex-col transition-colors duration-300">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-teal-500/5 dark:bg-teal-500/10 rounded-full blur-3xl -translate-x-1/3 -translate-y-1/3 -z-10"></div>
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-orange-500/5 dark:bg-orange-500/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 -z-10"></div>

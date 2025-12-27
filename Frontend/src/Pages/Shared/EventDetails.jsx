@@ -181,7 +181,7 @@ export default function EventDetails({ user }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7] dark:bg-mirage transition-colors duration-300">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-bg-base)] dark:bg-mirage transition-colors duration-300">
         <div className="w-16 h-16 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin mb-4"></div>
         <p className="text-gray-500 dark:text-lynch font-medium">Loading event details...</p>
       </div>
@@ -190,7 +190,7 @@ export default function EventDetails({ user }) {
 
   if (error || !event) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7] dark:bg-mirage px-6 text-center transition-colors duration-300">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-bg-base)] dark:bg-mirage px-6 text-center transition-colors duration-300">
         <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-8 rounded-3xl max-w-lg w-full">
           <h2 className="text-2xl font-bold mb-4">Oops! Event Not Found</h2>
           <p className="mb-6 opacity-80">{error || "The event you are looking for does not exist or has been removed."}</p>
@@ -208,7 +208,7 @@ export default function EventDetails({ user }) {
 
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage flex flex-col pt-10 transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage flex flex-col pt-10 transition-colors duration-300">
       <ToastContainer position="top-right" autoClose={3000} />
       
       {/* Hero Header */}

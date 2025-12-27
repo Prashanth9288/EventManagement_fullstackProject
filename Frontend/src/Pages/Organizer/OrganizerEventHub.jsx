@@ -32,7 +32,7 @@ const OrganizerEventHub = () => {
     if (!event) return <div className="p-8 text-center text-gray-500 dark:text-lynch">Event not found</div>;
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-mirage pt-24 pb-12 px-8 transition-colors duration-300">
+        <div className="min-h-screen bg-[var(--color-bg-base)] dark:bg-mirage pt-24 pb-12 px-8 transition-colors duration-300">
             <div className="max-w-4xl mx-auto">
                 <button 
                   onClick={() => navigate(`/organizer/event/${id}`)}
