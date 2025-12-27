@@ -2,13 +2,13 @@
 
 :root {
   /* Premium Palette from Mockups */
-  --color-bg-base: #F8FAF5; /* Soft Minty Cream */
-  --color-primary: #00BFA5; /* Vibrant Teal */
-  --color-secondary: #FF9F1C; /* Warm Orange */
-  --color-accent-blue: #00A6FB; /* Sky Blue */
-  
+  --color-bg-base: #f8faf5; /* Soft Minty Cream */
+  --color-primary: #00bfa5; /* Vibrant Teal */
+  --color-secondary: #ff9f1c; /* Warm Orange */
+  --color-accent-blue: #00a6fb; /* Sky Blue */
+
   --color-text-main: #111827; /* Gray 900 */
-  --color-text-muted: #4B5563; /* Gray 600 */
+  --color-text-muted: #4b5563; /* Gray 600 */
 
   --font-family-base: "Outfit", "Inter", sans-serif;
 }
@@ -22,8 +22,15 @@ body {
 }
 
 @theme {
-   --color-brand-cream: #F8FAF5;
-   --color-brand-teal: #00BFA5;
-   --color-brand-orange: #FF9F1C;
-   --color-brand-blue: #00A6FB;
+  --color-brand-cream: #f8faf5;
+  --color-brand-teal: #00bfa5;
+  --color-brand-orange: #ff9f1c;
+  --color-brand-blue: #00a6fb;
+
+  /* Dark Mode Premium Palette */
+  --color-mirage: #1d243a;
+  --color-bluewood: #2f3b5b;
+  --color-fiord: #4b4e77;
+  --color-lynch: #7884a5;
+  --color-casper: #b2c1d2;
 }

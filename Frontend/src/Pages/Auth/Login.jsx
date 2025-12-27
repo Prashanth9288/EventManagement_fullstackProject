@@ -56,18 +56,18 @@ export default function Login({ setUser }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FDFDF7] relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#FDFDF7] dark:bg-mirage relative overflow-hidden transition-colors duration-300">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3"></div>
 
-      <div className="bg-white shadow-xl rounded-3xl p-10 w-full max-w-md border border-gray-100 relative z-10 mx-4">
+      <div className="bg-white dark:bg-bluewood shadow-xl rounded-3xl p-10 w-full max-w-md border border-gray-100 dark:border-fiord relative z-10 mx-4 transition-all duration-300">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-gradient-to-tr from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg mx-auto mb-4">
             E
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-gray-500">Sign in to access your events</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h2>
+          <p className="text-gray-500 dark:text-lynch">Sign in to access your events</p>
         </div>
 
         {error && (
@@ -78,19 +78,19 @@ export default function Login({ setUser }) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-casper mb-1.5 ml-1">Email Address</label>
             <input
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="you@example.com"
-              className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+              className="w-full px-5 py-3 border border-gray-200 dark:border-fiord rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 dark:bg-mirage/50 hover:bg-white dark:hover:bg-mirage text-gray-900 dark:text-white"
             />
           </div>
           
           <div>
             <div className="flex justify-between items-center mb-1.5 ml-1">
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-casper">Password</label>
               <a href="#" className="text-xs text-teal-600 hover:text-teal-700 font-medium">Forgot Password?</a>
             </div>
             <input
@@ -99,7 +99,7 @@ export default function Login({ setUser }) {
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 hover:bg-white"
+              className="w-full px-5 py-3 border border-gray-200 dark:border-fiord rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all bg-gray-50/50 dark:bg-mirage/50 hover:bg-white dark:hover:bg-mirage text-gray-900 dark:text-white"
             />
           </div>
 
@@ -111,7 +111,7 @@ export default function Login({ setUser }) {
           </button>
         </form>
 
-        <p className="mt-8 text-center text-gray-500 text-sm">
+        <p className="mt-8 text-center text-gray-500 dark:text-lynch text-sm">
           Don't have an account?{" "}
           <Link to="/signup" className="text-teal-600 font-bold hover:text-teal-700 hover:underline">
             Create Account

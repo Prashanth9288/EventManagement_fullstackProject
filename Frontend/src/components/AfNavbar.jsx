@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome, FaCalendarAlt, FaPlusCircle, FaStar, FaEnvelope, FaBell, FaCheckDouble } from "react-icons/fa";
+import { FaHome, FaCalendarAlt, FaPlusCircle, FaStar, FaEnvelope, FaBell, FaCheckDouble, FaSun, FaMoon } from "react-icons/fa";
+import { useTheme } from "../context/ThemeContext";
 import NotificationDropdown from "./NotificationDropdown";
 
 export default function NavbarAfterLogin({ user, setUser }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -25,7 +27,7 @@ export default function NavbarAfterLogin({ user, setUser }) {
   ];
 
   return (
-    <nav className="bg-white/90 backdrop-blur-md border-b border-gray-100 fixed w-full top-0 left-0 z-50 transition-all duration-300">
+    <nav className="bg-white/90 dark:bg-mirage/90 backdrop-blur-md border-b border-gray-100 dark:border-fiord fixed w-full top-0 left-0 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
@@ -34,7 +36,7 @@ export default function NavbarAfterLogin({ user, setUser }) {
             <div className="w-8 h-8 bg-gradient-to-tr from-teal-400 to-teal-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md">
               E
             </div>
-            <Link to="/dashboard" className="text-2xl font-bold text-gray-900 tracking-tight">
+            <Link to="/dashboard" className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
               EventHub
             </Link>
           </div>
@@ -45,7 +47,7 @@ export default function NavbarAfterLogin({ user, setUser }) {
               <Link
                 key={item.name}
                 to={item.path}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-xl font-medium transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-casper hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-fiord/30 rounded-xl font-medium transition-all"
               >
                 <span className="text-lg">{item.icon}</span>
                 <span>{item.name}</span>
@@ -56,6 +58,14 @@ export default function NavbarAfterLogin({ user, setUser }) {
           {/* Right Section: Notifications & Profile */}
           <div className="hidden md:flex items-center gap-4 relative">
              
+             {/* Theme Toggle */}
+             <button 
+                onClick={toggleDarkMode} 
+                className="p-2 rounded-full text-gray-500 dark:text-casper hover:bg-gray-100 dark:hover:bg-fiord transition-colors"
+             >
+                {isDarkMode ? <FaSun className="text-yellow-400 text-xl" /> : <FaMoon className="text-gray-600 text-xl" />}
+             </button>
+
              {/* Notification Bell */}
              <NotificationDropdown user={user} />
 
@@ -63,34 +73,34 @@ export default function NavbarAfterLogin({ user, setUser }) {
             <div className="relative">
                 <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-3 focus:outline-none group px-3 py-1.5 rounded-full hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100"
+                className="flex items-center gap-3 focus:outline-none group px-3 py-1.5 rounded-full hover:bg-gray-50 dark:hover:bg-fiord transition-colors border border-transparent hover:border-gray-100 dark:hover:border-fiord"
                 >
-                <span className="text-gray-700 font-medium group-hover:text-teal-600 transition-colors">{user.name}</span>
+                <span className="text-gray-700 dark:text-gray-200 font-medium group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">{user.name}</span>
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 text-white flex items-center justify-center font-bold shadow-md border-2 border-white ring-2 ring-gray-50 group-hover:ring-teal-100 transition-all">
                     {user.name && user.name[0] ? user.name[0].toUpperCase() : 'U'}
                 </div>
                 </button>
                 {profileOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50 animate-fade-in-down">
-                    <div className="px-4 py-3 border-b border-gray-50 mb-2">
-                    <p className="text-sm text-gray-500">Signed in as</p>
-                    <p className="text-sm font-bold text-gray-900 truncate">{user.email || user.name}</p>
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-mirage border border-gray-100 dark:border-fiord rounded-2xl shadow-xl py-2 z-50 animate-fade-in-down">
+                    <div className="px-4 py-3 border-b border-gray-50 dark:border-fiord mb-2">
+                    <p className="text-sm text-gray-500 dark:text-lynch">Signed in as</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.email || user.name}</p>
                     </div>
                     <Link
                     to="/dashboard"
-                    className="block px-4 py-2.5 text-gray-700 hover:bg-teal-50 hover:text-teal-700 flex items-center gap-2 mx-2 rounded-xl transition-colors"
+                    className="block px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-fiord hover:text-teal-700 dark:hover:text-teal-400 flex items-center gap-2 mx-2 rounded-xl transition-colors"
                     onClick={() => setProfileOpen(false)}
                     >
                     <FaHome className="text-gray-400" /> Dashboard
                     </Link>
                     <Link
                     to="/my-tickets"
-                    className="block px-4 py-2.5 text-gray-700 hover:bg-teal-50 hover:text-teal-700 flex items-center gap-2 mx-2 rounded-xl transition-colors"
+                    className="block px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-fiord hover:text-teal-700 dark:hover:text-teal-400 flex items-center gap-2 mx-2 rounded-xl transition-colors"
                     onClick={() => setProfileOpen(false)}
                     >
                     <FaStar className="text-gray-400" /> My Tickets
                     </Link>
-                    <div className="border-t border-gray-50 my-2"></div>
+                    <div className="border-t border-gray-50 dark:border-fiord my-2"></div>
                     <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 flex items-center gap-2 mx-2 rounded-xl transition-colors max-w-[calc(100%-16px)]"
@@ -104,6 +114,12 @@ export default function NavbarAfterLogin({ user, setUser }) {
 
           {/* Mobile Buttons */}
           <div className="md:hidden flex items-center gap-3">
+             <button 
+                onClick={toggleDarkMode} 
+                className="p-2 rounded-full text-gray-500 dark:text-casper"
+             >
+                {isDarkMode ? <FaSun className="text-yellow-400 text-lg" /> : <FaMoon className="text-gray-600 text-lg" />}
+             </button>
              <NotificationDropdown user={user} />
             
             {/* Profile */}
@@ -119,7 +135,7 @@ export default function NavbarAfterLogin({ user, setUser }) {
             {/* Hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="text-gray-700 focus:outline-none text-2xl p-2"
+              className="text-gray-700 dark:text-white focus:outline-none text-2xl p-2"
             >
               {menuOpen ? "×" : "☰"}
             </button>
@@ -129,13 +145,13 @@ export default function NavbarAfterLogin({ user, setUser }) {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl h-screen">
+        <div className="md:hidden bg-white dark:bg-mirage border-t border-gray-100 dark:border-fiord absolute w-full shadow-xl h-screen">
           <div className="flex flex-col space-y-1 p-4">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-teal-50 hover:text-teal-700 rounded-xl font-medium"
+                className="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-casper hover:bg-teal-50 dark:hover:bg-fiord/30 hover:text-teal-700 dark:hover:text-teal-400 rounded-xl font-medium"
                 onClick={() => setMenuOpen(false)}
               >
                 <span className="text-lg text-teal-500">{item.icon}</span>
@@ -148,21 +164,21 @@ export default function NavbarAfterLogin({ user, setUser }) {
       
       {/* Mobile Profile logic remains same, Mobile Notifications overlay removed as Dropdown handles it */}
       {profileOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl top-[65px] z-40">
+        <div className="md:hidden bg-white dark:bg-mirage border-t border-gray-100 dark:border-fiord absolute w-full shadow-xl top-[65px] z-40">
           <div className="flex flex-col p-4">
-             <div className="px-4 py-2 border-b border-gray-50 mb-2">
-                  <p className="text-sm font-bold text-gray-900">{user.name}</p>
+             <div className="px-4 py-2 border-b border-gray-50 dark:border-fiord mb-2">
+                  <p className="text-sm font-bold text-gray-900 dark:text-white">{user.name}</p>
              </div>
             <Link
               to="/dashboard"
-              className="px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl"
+              className="px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-fiord/30 rounded-xl"
               onClick={() => setProfileOpen(false)}
             >
               Dashboard
             </Link>
              <Link
               to="/my-tickets"
-              className="px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl"
+              className="px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-fiord/30 rounded-xl"
               onClick={() => setProfileOpen(false)}
             >
               My Tickets
@@ -172,7 +188,7 @@ export default function NavbarAfterLogin({ user, setUser }) {
                 handleLogout();
                 setProfileOpen(false);
               }}
-              className="mt-2 w-full text-left px-4 py-3 bg-red-50 text-red-600 font-semibold rounded-xl"
+              className="mt-2 w-full text-left px-4 py-3 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 font-semibold rounded-xl"
             >
               Logout
             </button>

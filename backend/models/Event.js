@@ -7,7 +7,7 @@ const EventSchema = new Schema({
   description: { type: String },
   tags: [String],
   privacy: { type: String, enum: ['public', 'private', 'rsvp'], default: 'public' },
-  type: { type: String, enum: ['corporate', 'social', 'workshop', 'other'], default: 'social' },
+  type: { type: String, enum: ['Social', 'Corporate', 'Workshop', 'Conference', 'Concert', 'Exhibition', 'corporate', 'social', 'workshop', 'other'], default: 'Social' },
   format: { type: String, enum: ['virtual', 'physical', 'hybrid'], default: 'physical' },
   status: { type: String, enum: ['draft', 'published', 'past', 'cancelled'], default: 'draft' },
   start: { type: Date, required: true },

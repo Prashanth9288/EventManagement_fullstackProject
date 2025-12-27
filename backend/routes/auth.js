@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import dotenv from 'dotenv';
+import { authMiddleware } from '../utils/authMiddleware.js';
 
 dotenv.config();
 
@@ -119,47 +120,48 @@ router.post('/refresh', async (req, res, next) => {
 // ------------------
 // GET PROFILE
 // ------------------
-router.get('/profile', async (req, res, next) => {
+router.get('/profile', authMiddleware, async (req, res) => {
     try {
-        const authHeader = req.headers['authorization'];
-        if(!authHeader) return res.status(401).json({error: "No token provided"});
+        const user = req.user; // Set by middleware
         
-        const token = authHeader.split(' ')[1];
-        if(!token) return res.status(401).json({error: "No token provided"});
+        // Sanitization
+        if (user.branding && user.branding.logo && user.branding.logo.startsWith('blob:')) {
+            user.branding.logo = "";
+        }
+        
+        const safeUser = user.toObject ? user.toObject() : user;
+        delete safeUser.passwordHash;
+        delete safeUser.refreshTokenHash;
 
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = await User.findById(decoded.id).select('-passwordHash -refreshTokenHash');
-        
-        if (!user) return res.status(404).json({ error: "User not found" });
-        res.json(user);
+        res.json(safeUser);
     } catch (err) {
-        return res.status(401).json({ error: "Invalid token" });
+        res.status(500).json({ error: "Server Error" });
     }
 });
 
 // ------------------
 // UPDATE PROFILE
 // ------------------
-router.put('/profile', async (req, res, next) => {
+router.put('/profile', authMiddleware, async (req, res) => {
     try {
-        const authHeader = req.headers['authorization'];
-        if(!authHeader) return res.status(401).json({error: "No token provided"});
-        
-        const token = authHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
         const { name, email, branding } = req.body;
         
         const user = await User.findByIdAndUpdate(
-            decoded.id, 
+            req.user.id, 
             { name, email, branding }, 
             { new: true }
         ).select('-passwordHash -refreshTokenHash');
 
         if (!user) return res.status(404).json({ error: "User not found" });
+        
+        // Sanitization
+        if (user.branding && user.branding.logo && user.branding.logo.startsWith('blob:')) {
+             user.branding.logo = "";
+        }
+
         res.json(user);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).json({ error: "Failed to update profile" });
     }
 });

@@ -181,17 +181,17 @@ export default function EventDetails({ user }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7] dark:bg-mirage transition-colors duration-300">
         <div className="w-16 h-16 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin mb-4"></div>
-        <p className="text-gray-500 font-medium">Loading event details...</p>
+        <p className="text-gray-500 dark:text-lynch font-medium">Loading event details...</p>
       </div>
     );
   }
 
   if (error || !event) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7] px-6 text-center">
-        <div className="bg-red-50 text-red-600 p-8 rounded-3xl max-w-lg w-full">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFDF7] dark:bg-mirage px-6 text-center transition-colors duration-300">
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-8 rounded-3xl max-w-lg w-full">
           <h2 className="text-2xl font-bold mb-4">Oops! Event Not Found</h2>
           <p className="mb-6 opacity-80">{error || "The event you are looking for does not exist or has been removed."}</p>
           <button 
@@ -208,7 +208,7 @@ export default function EventDetails({ user }) {
 
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-10">
+    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage flex flex-col pt-10 transition-colors duration-300">
       <ToastContainer position="top-right" autoClose={3000} />
       
       {/* Hero Header */}
@@ -246,15 +246,15 @@ export default function EventDetails({ user }) {
           <div className="lg:col-span-2 space-y-12">
             
             {/* Tabs Navigation */}
-            <div className="flex gap-8 border-b border-gray-200">
+            <div className="flex gap-8 border-b border-gray-200 dark:border-fiord">
                {['about', 'agenda', 'discussion', 'polls', 'attendees'].map((tab) => (
                  <button
                    key={tab}
                    onClick={() => setActiveTab(tab)}
                    className={`pb-4 text-lg font-bold capitalize transition-all relative ${
                      activeTab === tab 
-                     ? "text-teal-600 after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-teal-600 after:rounded-t-full" 
-                     : "text-gray-400 hover:text-gray-600"
+                     ? "text-teal-600 dark:text-teal-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-teal-600 dark:after:bg-teal-400 after:rounded-t-full" 
+                     : "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                    }`}
                  >
                    {tab}
@@ -266,17 +266,17 @@ export default function EventDetails({ user }) {
             <div className="min-h-[400px]">
               {activeTab === 'about' && (
                 <div className="animate-fade-in">
-                   <h3 className="text-2xl font-bold text-gray-900 mb-6">About this Event</h3>
-                   <div className="prose prose-lg text-gray-600 leading-relaxed max-w-none mb-8">
+                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">About this Event</h3>
+                   <div className="prose prose-lg text-gray-600 dark:text-lynch leading-relaxed max-w-none mb-8">
                       {event.description}
                    </div>
 
                    {/* Ticket Section if Price > 0 */}
                    {event.price > 0 && (
-                       <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border border-indigo-100 flex justify-between items-center mb-8">
+                       <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-900/50 flex justify-between items-center mb-8">
                            <div>
-                               <div className="text-sm font-bold text-indigo-900 uppercase tracking-wide mb-1">Standard Ticket</div>
-                               <div className="text-3xl font-bold text-indigo-700">₹{event.price}</div>
+                               <div className="text-sm font-bold text-indigo-900 dark:text-indigo-300 uppercase tracking-wide mb-1">Standard Ticket</div>
+                               <div className="text-3xl font-bold text-indigo-700 dark:text-indigo-400">₹{event.price}</div>
                            </div>
                            <button 
                                onClick={() => setShowPaymentModal(true)}
@@ -288,11 +288,11 @@ export default function EventDetails({ user }) {
                    )}
                    
                    {event.tags && event.tags.length > 0 && (
-                     <div className="pt-8 border-t border-gray-100">
-                        <h4 className="font-bold text-gray-900 mb-4">Tags</h4>
+                     <div className="pt-8 border-t border-gray-100 dark:border-fiord">
+                        <h4 className="font-bold text-gray-900 dark:text-white mb-4">Tags</h4>
                         <div className="flex flex-wrap gap-2">
                           {event.tags.map(tag => (
-                            <span key={tag} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-teal-50 hover:text-teal-600 transition-colors cursor-default">
+                            <span key={tag} className="px-4 py-2 bg-gray-100 dark:bg-bluewood text-gray-600 dark:text-lynch rounded-lg text-sm font-medium hover:bg-teal-50 dark:hover:bg-mirage hover:text-teal-600 dark:hover:text-teal-400 transition-colors cursor-default">
                               #{tag}
                             </span>
                           ))}
@@ -347,8 +347,8 @@ export default function EventDetails({ user }) {
           {/* Sidebar */}
           <div className="space-y-8">
              {/* RSVP Card */}
-             <div className="bg-white p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 sticky top-24">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Are you going?</h3>
+             <div className="bg-white dark:bg-bluewood p-8 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-fiord sticky top-24">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Are you going?</h3>
                 
                 <div className="flex gap-2 mb-6">
                   {['yes', 'no', 'maybe'].map((status) => (
@@ -357,8 +357,8 @@ export default function EventDetails({ user }) {
                       onClick={() => handleRSVP(status)}
                       className={`flex-1 py-3 rounded-xl font-bold capitalize transition-all transform hover:scale-105 ${
                         userResponse === status
-                          ? "bg-teal-600 text-white shadow-lg shadow-teal-500/30 ring-2 ring-teal-600 ring-offset-2"
-                          : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                          ? "bg-teal-600 text-white shadow-lg shadow-teal-500/30 ring-2 ring-teal-600 ring-offset-2 dark:ring-offset-bluewood"
+                          : "bg-white dark:bg-mirage border border-gray-200 dark:border-fiord text-gray-600 dark:text-lynch hover:bg-gray-50 dark:hover:bg-gray-800"
                       }`}
                     >
                       {status}
@@ -368,18 +368,18 @@ export default function EventDetails({ user }) {
 
                 {/* RSVP Stats */}
                 {event.rsvpCounts && (
-                  <div className="bg-gray-50 rounded-xl p-4 mb-6 flex justify-between text-center">
+                  <div className="bg-gray-50 dark:bg-mirage rounded-xl p-4 mb-6 flex justify-between text-center border border-gray-100 dark:border-fiord">
                     <div>
-                      <div className="text-xl font-bold text-gray-900">{event.rsvpCounts.yes}</div>
-                      <div className="text-xs font-bold text-gray-500 uppercase">Going</div>
+                      <div className="text-xl font-bold text-gray-900 dark:text-white">{event.rsvpCounts.yes}</div>
+                      <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Going</div>
                     </div>
                     <div>
-                      <div className="text-xl font-bold text-gray-900">{event.rsvpCounts.maybe}</div>
-                      <div className="text-xs font-bold text-gray-500 uppercase">Maybe</div>
+                      <div className="text-xl font-bold text-gray-900 dark:text-white">{event.rsvpCounts.maybe}</div>
+                      <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Maybe</div>
                     </div>
                     <div>
-                      <div className="text-xl font-bold text-gray-900">{event.rsvpCounts.no}</div>
-                      <div className="text-xs font-bold text-gray-500 uppercase">No</div>
+                      <div className="text-xl font-bold text-gray-900 dark:text-white">{event.rsvpCounts.no}</div>
+                      <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">No</div>
                     </div>
                   </div>
                 )}
@@ -393,12 +393,12 @@ export default function EventDetails({ user }) {
                    </button>
                 )}
                 
-                <div className="space-y-4 text-gray-600">
-                   <div className="flex items-center justify-between py-3 border-b border-gray-50">
+                <div className="space-y-4 text-gray-600 dark:text-lynch">
+                   <div className="flex items-center justify-between py-3 border-b border-gray-50 dark:border-fiord">
                       <span className="flex items-center gap-2"><FaUsers className="text-teal-500"/> Spots</span>
-                      <span className="font-semibold">Unlimited</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">Unlimited</span>
                    </div>
-                   <div className="flex items-center justify-between py-3 border-b border-gray-50">
+                   <div className="flex items-center justify-between py-3 border-b border-gray-50 dark:border-fiord">
                       <span className="flex items-center gap-2"><FaShareAlt className="text-teal-500"/> Share</span>
                       <div className="flex gap-2">
                          <button 
@@ -414,7 +414,7 @@ export default function EventDetails({ user }) {
                                      toast.info("Link copied to clipboard!");
                                  }
                              }}
-                             className="w-8 h-8 rounded-full bg-gray-100 hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
+                             className="w-8 h-8 rounded-full bg-gray-100 dark:bg-mirage hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
                              title="Share"
                          >
                             <FaShareAlt />
@@ -423,21 +423,21 @@ export default function EventDetails({ user }) {
                    </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-100">
+                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-fiord">
                    <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
                          <div className="w-full h-full bg-gradient-to-br from-orange-400 to-pink-500"></div>
                       </div>
                       <div className="flex-1">
-                         <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Hosted by</p>
+                         <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">Hosted by</p>
                          <div className="flex justify-between items-center">
-                            <p className="font-bold text-gray-900">{event.host?.name || "Event Organizer"}</p>
+                            <p className="font-bold text-gray-900 dark:text-white">{event.host?.name || "Event Organizer"}</p>
                             {/* Subscribe Button */}
                             {user && event.host?._id !== user._id && (
                                 <button 
                                     onClick={handleSubscribe} 
                                     disabled={isSubscribed}
-                                    className={`ml-2 text-xs font-bold px-3 py-1 rounded-full transition ${isSubscribed ? 'bg-gray-100 text-gray-500 cursor-default' : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'}`}
+                                    className={`ml-2 text-xs font-bold px-3 py-1 rounded-full transition ${isSubscribed ? 'bg-gray-100 dark:bg-mirage text-gray-500 cursor-default' : 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50'}`}
                                 >
                                     {isSubscribed ? "Subscribed" : "+ Subscribe"}
                                 </button>
@@ -450,15 +450,15 @@ export default function EventDetails({ user }) {
              
              {/* Map / Location Card */}
              {event.location?.address && (
-                <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 opacity-90">
-                   <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="bg-white dark:bg-bluewood p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-fiord opacity-90">
+                   <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                       <FaMapMarkerAlt className="text-red-500" /> Location
                    </h3>
-                   <div className="aspect-video bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-gray-400 relative overflow-hidden group cursor-pointer">
+                   <div className="aspect-video bg-gray-100 dark:bg-mirage rounded-xl mb-4 flex items-center justify-center text-gray-400 relative overflow-hidden group cursor-pointer">
                       <span className="group-hover:scale-110 transition-transform">Map View Placeholder</span>
                       <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
                    </div>
-                   <p className="text-gray-600 font-medium leading-relaxed">
+                   <p className="text-gray-600 dark:text-lynch font-medium leading-relaxed">
                       {event.location.address}
                    </p>
                 </div>

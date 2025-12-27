@@ -158,6 +158,39 @@ io.on('connection', (socket) => {
           console.error("DM Error:", err);
       }
   });
+
+  // --- AI Chatbot Logic ---
+  socket.on('ai:ask', async ({ userId, query }) => {
+    try {
+        const lowerQuery = query.toLowerCase();
+        let response = "I'm not sure about that, but I can help you navigate the platform.";
+
+        // Simple Rule-Based AI with Real-Time Data Access
+        if (lowerQuery.includes('how many events') || lowerQuery.includes('stats')) {
+            const Event = (await import('./models/Event.js')).default;
+            const count = await Event.countDocuments();
+            response = `There are currently ${count} events on the platform.`;
+        } else if (lowerQuery.includes('create') && lowerQuery.includes('event')) {
+             response = "To create an event, click the 'Create Event' button in the navbar or go to your Organizer Dashboard.";
+        } else if (lowerQuery.includes('hello') || lowerQuery.includes('hi')) {
+             response = "Hello! I am your real-time Project Assistant. Ask me about your events or how to use the app.";
+        } else if (lowerQuery.includes('time')) {
+             response = `The current server time is ${new Date().toLocaleTimeString()}.`;
+        }
+
+        // Simulate "thinking" delay for realism
+        setTimeout(() => {
+            socket.emit('ai:response', { 
+                content: response, 
+                timestamp: new Date() 
+            });
+        }, 800);
+
+    } catch (err) {
+        console.error("AI Error:", err);
+        socket.emit('ai:response', { content: "I encountered an error processing your request." });
+    }
+  });
 });
 
 // --- Connect DB and start server ---

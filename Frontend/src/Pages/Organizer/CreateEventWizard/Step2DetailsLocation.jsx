@@ -63,26 +63,26 @@ const Step2DetailsLocation = ({ formData, updateFormData, nextStep, prevStep }) 
           {/* Start */}
           <div className="space-y-4">
               <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Start Date *</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Start Date *</label>
                   <div className="relative">
                     <input 
                         type="date" 
                         name="startDate"
                         value={dateTime.startDate}
                         onChange={handleDateTimeChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white"
                     />
                   </div>
               </div>
               <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Start Time *</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Start Time *</label>
                   <div className="relative">
                     <input 
                         type="time" 
                         name="startTime"
                         value={dateTime.startTime}
                         onChange={handleDateTimeChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white"
                     />
                   </div>
               </div>
@@ -91,26 +91,26 @@ const Step2DetailsLocation = ({ formData, updateFormData, nextStep, prevStep }) 
           {/* End */}
           <div className="space-y-4">
               <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">End Date (Optional)</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">End Date (Optional)</label>
                   <div className="relative">
                     <input 
                         type="date" 
                         name="endDate"
                         value={dateTime.endDate}
                         onChange={handleDateTimeChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white"
                     />
                   </div>
               </div>
               <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">End Time (Optional)</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">End Time (Optional)</label>
                   <div className="relative">
                     <input 
                         type="time" 
                         name="endTime"
                         value={dateTime.endTime}
                         onChange={handleDateTimeChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white"
                     />
                   </div>
               </div>
@@ -118,28 +118,28 @@ const Step2DetailsLocation = ({ formData, updateFormData, nextStep, prevStep }) 
       </div>
 
       {/* Location Section */}
-      <div className="space-y-6 pt-4 border-t border-gray-100">
+      <div className="space-y-6 pt-4 border-t border-gray-100 dark:border-fiord">
           <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Venue Name *</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Venue Name *</label>
               <input 
                 type="text"
                 name="placeId" // Using placeId temporarily for Venue Name
                 value={formData.location.placeId || ''} 
                 onChange={handleLocationChange}
                 placeholder="e.g., Central Park, Community Center..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
           </div>
 
           <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Full Address *</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Address *</label>
               <input 
                 type="text"
                 name="address"
                 value={formData.location.address || ''}
                 onChange={handleLocationChange}
                 placeholder="Enter complete address..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-fiord rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white dark:bg-bluewood text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
           </div>
       </div>
@@ -147,7 +147,7 @@ const Step2DetailsLocation = ({ formData, updateFormData, nextStep, prevStep }) 
       <div className="flex justify-between pt-8">
         <button
           onClick={prevStep}
-          className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
+          className="px-6 py-3 border border-gray-300 dark:border-fiord text-gray-700 dark:text-white rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-mirage transition-all flex items-center gap-2"
         >
           <span className="text-lg">‹</span> Previous
         </button>

@@ -15,6 +15,13 @@ export const ThemeProvider = ({ children }) => {
     isCorporate: false, // Flag for corporate mode
   });
 
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check local storage or system preference
+    const saved = localStorage.getItem("darkMode");
+    if (saved !== null) return JSON.parse(saved);
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
   // Apply theme to CSS variables
   useEffect(() => {
     const root = document.documentElement;
@@ -23,12 +30,25 @@ export const ThemeProvider = ({ children }) => {
     root.style.setProperty("--font-family-base", theme.fontFamily);
   }, [theme]);
 
+  // Apply Dark Mode Class
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+
   const updateTheme = (newTheme) => {
     setTheme((prev) => ({ ...prev, ...newTheme }));
   };
 
+  const toggleDarkMode = () => setIsDarkMode(prev => !prev);
+
   return (
-    <ThemeContext.Provider value={{ theme, updateTheme }}>
+    <ThemeContext.Provider value={{ theme, updateTheme, isDarkMode, toggleDarkMode }}>
       {children}
     </ThemeContext.Provider>
   );

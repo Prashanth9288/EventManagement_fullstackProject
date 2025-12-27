@@ -36,10 +36,10 @@ export default function Features() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-20">
+    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage flex flex-col pt-20 transition-colors duration-300">
       
       {/* Hero Section */}
-      <div className="bg-gray-900 border-b border-gray-100 py-24 relative overflow-hidden">
+      <div className="bg-gray-900 border-b border-gray-100 dark:border-fiord py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-teal-900/40 to-gray-900 z-0"></div>
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -64,14 +64,14 @@ export default function Features() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, idx) => (
-            <div key={idx} className="group bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-50 to-emerald-100 rounded-2xl flex items-center justify-center text-2xl text-teal-600 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-teal-100/50">
+            <div key={idx} className="group bg-white dark:bg-bluewood p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-fiord hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+              <div className="w-14 h-14 bg-gradient-to-br from-teal-50 to-emerald-100 dark:from-teal-900/30 dark:to-emerald-900/30 rounded-2xl flex items-center justify-center text-2xl text-teal-600 dark:text-teal-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-teal-100/50 dark:border-teal-900/50">
                 {feature.icon}
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-teal-600 transition-colors">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                 {feature.title}
               </h3>
-              <p className="text-gray-500 leading-relaxed">
+              <p className="text-gray-500 dark:text-lynch leading-relaxed">
                 {feature.desc}
               </p>
             </div>

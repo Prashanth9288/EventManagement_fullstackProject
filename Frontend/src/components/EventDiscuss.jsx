@@ -58,8 +58,8 @@ export default function EventDiscuss({ eventId }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Discussion ({comments.length})</h3>
+    <div className="bg-white dark:bg-bluewood rounded-2xl shadow-sm border border-gray-200 dark:border-fiord p-6 transition-colors duration-300">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Discussion ({comments.length})</h3>
         
         {/* Comment Input */}
         <form onSubmit={handleSubmit} className="flex gap-4 mb-8">
@@ -69,7 +69,7 @@ export default function EventDiscuss({ eventId }) {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Share your thoughts..." 
-                    className="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition"
+                    className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-mirage border border-gray-200 dark:border-fiord rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-mirage/80 dark:text-white dark:placeholder-lynch transition"
                 />
                 <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition" disabled={!newComment}>
                     <FaPaperPlane />
@@ -80,19 +80,19 @@ export default function EventDiscuss({ eventId }) {
         {/* Comments List */}
         <div className="space-y-6 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
             {comments.length === 0 ? (
-                <p className="text-center text-gray-400">Be the first to say something!</p>
+                <p className="text-center text-gray-400 dark:text-lynch">Be the first to say something!</p>
             ) : (
                 comments.map((comment, idx) => (
                     <div key={idx} className="flex gap-4 animate-fade-in-up">
-                        <div className="mt-1 text-gray-300 text-3xl">
+                        <div className="mt-1 text-gray-300 dark:text-fiord text-3xl">
                              <FaUserCircle />
                         </div>
                         <div>
                             <div className="flex items-center gap-2 mb-1">
-                                <span className="font-bold text-gray-900">{comment.user?.name || "User"}</span>
-                                <span className="text-xs text-gray-400">{new Date(comment.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                <span className="font-bold text-gray-900 dark:text-white">{comment.user?.name || "User"}</span>
+                                <span className="text-xs text-gray-400 dark:text-casper">{new Date(comment.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                             </div>
-                            <p className="text-gray-600 leading-relaxed bg-gray-50 px-4 py-2 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl inline-block">
+                            <p className="text-gray-600 dark:text-lynch leading-relaxed bg-gray-50 dark:bg-fiord/30 px-4 py-2 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl inline-block">
                                 {comment.content}
                             </p>
                         </div>

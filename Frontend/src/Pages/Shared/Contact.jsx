@@ -38,7 +38,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDF7] flex flex-col pt-20">
+    <div className="min-h-screen bg-[#FDFDF7] dark:bg-mirage flex flex-col pt-20 transition-colors duration-300">
       <ToastContainer position="top-right" autoClose={3000} />
       
       {/* Header */}
@@ -59,48 +59,48 @@ export default function Contact() {
           
           {/* Contact Info Cards */}
           <div className="space-y-6 lg:col-span-1">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-xl shrink-0">
+            <div className="bg-white dark:bg-bluewood p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-fiord flex items-start gap-4 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center text-xl shrink-0">
                 <FaEnvelope />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-lg">Email Us</h3>
-                <p className="text-gray-500 mb-1">Our friendly team is here to help.</p>
-                <a href="mailto:support@eventhub.com" className="text-teal-600 font-semibold hover:underline">support@eventhub.com</a>
+                <h3 className="font-bold text-gray-900 dark:text-white text-lg">Email Us</h3>
+                <p className="text-gray-500 dark:text-lynch mb-1">Our friendly team is here to help.</p>
+                <a href="mailto:support@eventhub.com" className="text-teal-600 dark:text-teal-400 font-semibold hover:underline">support@eventhub.com</a>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0">
+            <div className="bg-white dark:bg-bluewood p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-fiord flex items-start gap-4 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl shrink-0">
                 <FaMapMarkerAlt />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-lg">Visit Us</h3>
-                <p className="text-gray-500 mb-1">Come say hello at our office headquarters.</p>
-                <p className="text-gray-800 font-medium">100 Smith Street<br/>Collingwood VIC 3066 AU</p>
+                <h3 className="font-bold text-gray-900 dark:text-white text-lg">Visit Us</h3>
+                <p className="text-gray-500 dark:text-lynch mb-1">Come say hello at our office headquarters.</p>
+                <p className="text-gray-800 dark:text-gray-300 font-medium">100 Smith Street<br/>Collingwood VIC 3066 AU</p>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center text-xl shrink-0">
+            <div className="bg-white dark:bg-bluewood p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-fiord flex items-start gap-4 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full flex items-center justify-center text-xl shrink-0">
                 <FaPhoneAlt />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-lg">Call Us</h3>
-                <p className="text-gray-500 mb-1">Mon-Fri from 8am to 5pm.</p>
-                <a href="tel:+15550000000" className="text-gray-800 font-medium hover:text-orange-600 transition">+1 (555) 000-0000</a>
+                <h3 className="font-bold text-gray-900 dark:text-white text-lg">Call Us</h3>
+                <p className="text-gray-500 dark:text-lynch mb-1">Mon-Fri from 8am to 5pm.</p>
+                <a href="tel:+15550000000" className="text-gray-800 dark:text-gray-300 font-medium hover:text-orange-600 dark:hover:text-orange-400 transition">+1 (555) 000-0000</a>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-gray-100">
-               <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a message</h2>
+            <div className="bg-white dark:bg-bluewood p-8 md:p-10 rounded-3xl shadow-lg border border-gray-100 dark:border-fiord">
+               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send us a message</h2>
                <form onSubmit={handleSubmit} className="space-y-6">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                    <div className="space-y-2">
-                     <label className="text-sm font-bold text-gray-700 ml-1">Your Name</label>
+                     <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Your Name</label>
                      <input 
                        type="text" 
                        name="name"
@@ -108,11 +108,11 @@ export default function Contact() {
                        onChange={handleChange}
                        placeholder="John Doe"
                        required
-                       className="w-full px-5 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
+                       className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-fiord bg-gray-50 dark:bg-mirage text-gray-900 dark:text-white focus:bg-white dark:focus:bg-bluewood focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
                      />
                    </div>
                    <div className="space-y-2">
-                     <label className="text-sm font-bold text-gray-700 ml-1">Email Address</label>
+                     <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Email Address</label>
                      <input 
                        type="email" 
                        name="email"
@@ -120,13 +120,13 @@ export default function Contact() {
                        onChange={handleChange}
                        placeholder="john@example.com"
                        required
-                       className="w-full px-5 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
+                       className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-fiord bg-gray-50 dark:bg-mirage text-gray-900 dark:text-white focus:bg-white dark:focus:bg-bluewood focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
                      />
                    </div>
                  </div>
 
                  <div className="space-y-2">
-                   <label className="text-sm font-bold text-gray-700 ml-1">Subject</label>
+                   <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Subject</label>
                    <input 
                      type="text" 
                      name="subject"
@@ -134,12 +134,12 @@ export default function Contact() {
                      onChange={handleChange}
                      placeholder="How can we help?"
                      required
-                     className="w-full px-5 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
+                     className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-fiord bg-gray-50 dark:bg-mirage text-gray-900 dark:text-white focus:bg-white dark:focus:bg-bluewood focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
                    />
                  </div>
 
                  <div className="space-y-2">
-                   <label className="text-sm font-bold text-gray-700 ml-1">Message</label>
+                   <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Message</label>
                    <textarea 
                      name="message"
                      value={formData.message}
@@ -147,7 +147,7 @@ export default function Contact() {
                      rows="5"
                      placeholder="Tell us more regarding your query..."
                      required
-                     className="w-full px-5 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium resize-none"
+                     className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-fiord bg-gray-50 dark:bg-mirage text-gray-900 dark:text-white focus:bg-white dark:focus:bg-bluewood focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium resize-none"
                    ></textarea>
                  </div>
 

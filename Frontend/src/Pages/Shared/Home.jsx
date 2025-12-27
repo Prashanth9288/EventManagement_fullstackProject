@@ -244,14 +244,14 @@ function EventCard({ event }) {
 
   return (
     <div
-      className="bg-white rounded-2xl shadow-sm border border-orange-100/50 overflow-hidden cursor-pointer transform hover:scale-[1.02] hover:shadow-xl transition-all duration-300 group"
+      className="bg-white dark:bg-bluewood rounded-2xl shadow-sm border border-orange-100/50 dark:border-fiord overflow-hidden cursor-pointer transform hover:scale-[1.02] hover:shadow-xl transition-all duration-300 group"
       onClick={() => navigate(`/events/${event._id}`)}
     >
       <div className="p-6 relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal-400 via-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <p className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-600 mb-2 tracking-wide uppercase">{formatDate(event.start)}</p>
-        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-teal-600 transition-colors">{event.title}</h3>
-        <p className="text-gray-500 leading-relaxed line-clamp-2">{event.description}</p>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">{event.title}</h3>
+        <p className="text-gray-500 dark:text-lynch leading-relaxed line-clamp-2">{event.description}</p>
         <div className="mt-5 flex items-center justify-between">
           <span className="bg-orange-50 text-orange-700 text-xs font-bold px-3 py-1 rounded-full border border-orange-100 uppercase tracking-wider">
             {event.privacy}
@@ -288,23 +288,23 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FDFDF7]">
+    <div className="min-h-screen flex flex-col bg-[#FDFDF7] dark:bg-mirage transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative px-6 py-24 md:py-32 flex flex-col items-center text-center overflow-hidden">
+      <section className="relative px-6 py-12 md:py-20 flex flex-col items-center text-center overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-teal-500/5 rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-3xl -z-10"></div>
 
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-100 mb-8 animate-fade-in-up">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-bluewood rounded-full shadow-sm border border-gray-100 dark:border-fiord mb-8 animate-fade-in-up">
           <span className="flex h-2 w-2 rounded-full bg-teal-500"></span>
-          <span className="text-sm font-medium text-gray-600">The Ultimate Event Platform</span>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-300">The Ultimate Event Platform</span>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-tight tracking-tight max-w-5xl">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white mb-8 leading-tight tracking-tight max-w-5xl">
           Create <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-600">Amazing</span> Events
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-500 mb-10 max-w-2xl leading-relaxed">
+        <p className="text-xl md:text-2xl text-gray-500 dark:text-lynch mb-10 max-w-2xl leading-relaxed">
           The complete event management platform to create, organize, and manage unforgettable experiences.
         </p>
         
@@ -327,51 +327,51 @@ export default function Home() {
       <SolutionFinder isOpen={showSolutionFinder} onClose={() => setShowSolutionFinder(false)} />
 
       {/* Features Grid - As per mockup */}
-      <section id="features" className="py-24 px-6">
+      <section id="features" className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-6">
             {/* Card 1: Event Creation */}
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-white dark:bg-bluewood p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-fiord hover:shadow-xl transition-all duration-300">
               <div className="w-14 h-14 bg-blue-500 text-white rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg shadow-blue-500/30">
                 📅
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Event Creation</h3>
-              <p className="text-gray-500 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Event Creation</h3>
+              <p className="text-gray-500 dark:text-lynch leading-relaxed">
                 Create and manage amazing events with our powerful wizard.
               </p>
             </div>
 
             {/* Card 2: RSVP Management */}
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-white dark:bg-bluewood p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-fiord hover:shadow-xl transition-all duration-300">
               <div className="w-14 h-14 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg shadow-emerald-500/30">
                 👥
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">RSVP Management</h3>
-              <p className="text-gray-500 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">RSVP Management</h3>
+              <p className="text-gray-500 dark:text-lynch leading-relaxed">
                 Track attendees and manage registrations effortlessly.
               </p>
             </div>
 
             {/* Card 3: Lightning Fast */}
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-white dark:bg-bluewood p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-fiord hover:shadow-xl transition-all duration-300">
               <div className="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg shadow-amber-500/30">
                 ⚡
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Lightning Fast</h3>
-              <p className="text-gray-500 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Lightning Fast</h3>
+              <p className="text-gray-500 dark:text-lynch leading-relaxed">
                 Experience blazing speed with our optimized platform.
               </p>
             </div>
 
             {/* Card 4: Made with Love */}
-            <div className="bg-white p-8 rounded-3xl shadow-sm border-2 border-blue-500/10 hover:border-blue-500 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+            <div className="bg-white dark:bg-bluewood p-8 rounded-3xl shadow-sm border-2 border-blue-500/10 dark:border-blue-500/20 hover:border-blue-500 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
               <div className="absolute inset-0 bg-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div className="relative z-10">
                 <div className="w-14 h-14 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg shadow-pink-500/30">
                   ❤️
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Made with Love</h3>
-                <p className="text-gray-500 leading-relaxed">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Made with Love</h3>
+                <p className="text-gray-500 dark:text-lynch leading-relaxed">
                   Crafted with passion and attention to every detail.
                 </p>
               </div>
@@ -381,10 +381,10 @@ export default function Home() {
       </section>
 
       {/* Large Feature Highlights */}
-      <section className="py-20 px-6">
+      <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Powerful <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">Features</span>
             </h2>
              <p className="text-xl text-gray-500">Everything you need to create, manage, and track successful events</p>
@@ -397,13 +397,13 @@ export default function Home() {
                   { icon: '👥', title: 'RSVP Management', desc: 'Track attendees, manage registrations, and handle waitlists.', color: 'emerald' },
                   { icon: '⭐', title: 'Timeline & Analytics', desc: 'Visualize your events on a timeline and get insights.', color: 'amber' }
                 ].map((feature, idx) => (
-                  <div key={idx} className="flex gap-6 p-4 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 cursor-default">
+                  <div key={idx} className="flex gap-6 p-4 rounded-2xl hover:bg-white dark:hover:bg-bluewood hover:shadow-lg transition-all duration-300 cursor-default">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl bg-${feature.color}-100 text-${feature.color}-600`}>
                       {feature.icon}
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h4>
-                      <p className="text-gray-500">{feature.desc}</p>
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h4>
+                      <p className="text-gray-500 dark:text-lynch">{feature.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -428,12 +428,12 @@ export default function Home() {
       </section>
 
       {/* Popular Events Section */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-12 px-6 bg-white dark:bg-mirage transition-colors">
         <div className="container mx-auto">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Popular Events</h2>
-              <p className="text-gray-500 text-lg">Don't miss out on these trending experiences</p>
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Popular Events</h2>
+              <p className="text-gray-500 dark:text-lynch text-lg">Don't miss out on these trending experiences</p>
             </div>
             <Link to="/events" className="hidden md:inline-flex items-center gap-2 text-teal-600 font-semibold hover:text-teal-700">
               View All Events <span>→</span>
@@ -461,7 +461,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6">
+      <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto bg-gradient-to-r from-gray-900 to-gray-800 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>

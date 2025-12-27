@@ -146,8 +146,8 @@ export default function OrganizerDashboard() {
         onClick={() => setActiveTab(id)}
         className={`w-full flex items-center gap-4 px-6 py-4 transition-all duration-200 border-l-4
             ${activeTab === id 
-                ? 'bg-blue-50 border-blue-600 text-blue-700' 
-                : 'border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-600 text-blue-700 dark:text-blue-400' 
+                : 'border-transparent text-gray-500 dark:text-lynch hover:bg-gray-50 dark:hover:bg-fiord/30 hover:text-gray-900 dark:hover:text-white'
             }`}
     >
         <span className="text-xl">{icon}</span>
@@ -156,12 +156,12 @@ export default function OrganizerDashboard() {
   );
 
   return (
-    <div className="flex h-screen bg-[#F3F4F6] overflow-hidden font-sans">
+    <div className="flex h-screen bg-[#F3F4F6] dark:bg-mirage overflow-hidden font-sans transition-colors duration-300">
       
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col z-20 shadow-lg">
-        <div className="p-6 border-b border-gray-100">
-            <div className="flex items-center gap-3 text-blue-900">
+      <aside className="w-64 bg-white dark:bg-bluewood border-r border-gray-200 dark:border-fiord flex flex-col z-20 shadow-lg">
+        <div className="p-6 border-b border-gray-100 dark:border-fiord">
+            <div className="flex items-center gap-3 text-blue-900 dark:text-white">
                 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-blue-200">
                     E
                 </div>
@@ -175,12 +175,12 @@ export default function OrganizerDashboard() {
             <SidebarItem id="attendees" icon={<FaUsers />} label="Attendees" />
             <SidebarItem id="marketing" icon={<FaBullhorn />} label="Marketing" />
             <SidebarItem id="finance" icon={<FaMoneyBill />} label="Finance" />
-            <div className="pt-6 mt-6 border-t border-gray-100">
+            <div className="pt-6 mt-6 border-t border-gray-100 dark:border-fiord">
                 <SidebarItem id="settings" icon={<FaCog />} label="Settings" />
             </div>
         </div>
 
-        <div className="p-4 border-t border-gray-100 bg-gray-50 space-y-3">
+        <div className="p-4 border-t border-gray-100 dark:border-fiord bg-gray-50 dark:bg-mirage/50 space-y-3">
              <Link to="/dashboard" className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
                 <FaCompass /> Switch to Attendee View
              </Link>
@@ -190,8 +190,8 @@ export default function OrganizerDashboard() {
                     {user.name.charAt(0)}
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-                    <p className="text-[10px] text-gray-500 truncate uppercase tracking-wider">Organizer</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.name}</p>
+                    <p className="text-[10px] text-gray-500 dark:text-lynch truncate uppercase tracking-wider">Organizer</p>
                 </div>
                 <button onClick={() => { localStorage.removeItem('userToken'); navigate('/login'); }} className="text-gray-400 hover:text-red-500">
                     <FaSignOutAlt />
@@ -204,8 +204,8 @@ export default function OrganizerDashboard() {
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
          
          {/* Top Header */}
-         <header className="h-20 bg-white border-b border-gray-200 flex justify-between items-center px-8 shadow-sm z-10">
-             <h1 className="text-2xl font-bold text-gray-800 capitalize">{activeTab}</h1>
+         <header className="h-20 bg-white dark:bg-bluewood border-b border-gray-200 dark:border-fiord flex justify-between items-center px-8 shadow-sm z-10 transition-colors duration-300">
+             <h1 className="text-2xl font-bold text-gray-800 dark:text-white capitalize">{activeTab}</h1>
              
              <div className="flex items-center gap-6">
                 <div className="relative">
@@ -213,7 +213,7 @@ export default function OrganizerDashboard() {
                     <input 
                         type="text" 
                         placeholder="Search..." 
-                        className="pl-10 pr-4 py-2 bg-gray-100 border-none rounded-lg focus:ring-2 focus:ring-blue-500 w-64 text-sm"
+                        className="pl-10 pr-4 py-2 bg-gray-100 dark:bg-mirage border-none rounded-lg focus:ring-2 focus:ring-blue-500 w-64 text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-lynch transition-colors"
                     />
                 </div>
                 <NotificationDropdown user={user} />
@@ -237,7 +237,7 @@ export default function OrganizerDashboard() {
                             { label: "Active Events", value: stats.activeEvents, change: "Live", color: "indigo", icon: <FaCalendarAlt /> },
                             { label: "Page Views", value: stats.pageViews, change: "Est.", color: "purple", icon: <FaChartLine /> },
                         ].map((stat, idx) => (
-                           <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                           <div key={idx} className="bg-white dark:bg-bluewood p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-fiord hover:shadow-md transition">
                                <div className="flex justify-between items-start mb-4">
                                    <div className={`p-3 rounded-xl bg-${stat.color}-50 text-${stat.color}-600 text-xl`}>
                                        {stat.icon}
@@ -253,13 +253,13 @@ export default function OrganizerDashboard() {
                     </div>
 
                     {/* Recent Events Table (Reused from before) */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div className="p-6 border-b border-gray-100">
-                            <h3 className="text-lg font-bold text-gray-900">Your Events</h3>
+                    <div className="bg-white dark:bg-bluewood rounded-2xl shadow-sm border border-gray-200 dark:border-fiord overflow-hidden">
+                        <div className="p-6 border-b border-gray-100 dark:border-fiord">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">Your Events</h3>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left">
-                                <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-bold">
+                                <thead className="bg-gray-50 dark:bg-fiord/30 text-gray-500 dark:text-lynch text-xs uppercase font-bold">
                                     <tr>
                                         <th className="px-6 py-4">Event Name</th>
                                         <th className="px-6 py-4">Date</th>
@@ -268,11 +268,11 @@ export default function OrganizerDashboard() {
                                         <th className="px-6 py-4">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-100">
+                                <tbody className="divide-y divide-gray-100 dark:divide-fiord">
                                     {events.map(event => (
-                                        <tr key={event._id} className="hover:bg-gray-50 transition">
-                                            <td className="px-6 py-4 font-medium text-gray-900">{event.title}</td>
-                                            <td className="px-6 py-4 text-gray-500">{new Date(event.start).toLocaleDateString()}</td>
+                                        <tr key={event._id} className="hover:bg-gray-50 dark:hover:bg-fiord/10 transition">
+                                            <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{event.title}</td>
+                                            <td className="px-6 py-4 text-gray-500 dark:text-lynch">{new Date(event.start).toLocaleDateString()}</td>
                                             <td className="px-6 py-4">
                                                 <span className="px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 uppercase">Active</span>
                                             </td>
@@ -303,11 +303,21 @@ export default function OrganizerDashboard() {
                      {events.length === 0 && <p className="text-gray-500">You haven't created any events yet.</p>}
                      
                      {events.map(event => (
-                         <div key={event._id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-center gap-6">
-                             <div className="flex-1">
+                         <div key={event._id} className="bg-white dark:bg-bluewood p-6 rounded-xl shadow-sm border border-gray-200 dark:border-fiord flex flex-col md:flex-row justify-between items-center gap-6">
+                             {/* Thumbnail */}
+                             <div className="w-full md:w-32 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-fiord/50">
+                                <img 
+                                    src={event.media?.banners?.[0] || `https://source.unsplash.com/random/400x300/?event,${event.type}`} 
+                                    alt={event.title}
+                                    onError={(e) => { e.target.onerror = null; e.target.src = `https://source.unsplash.com/random/400x300/?event,${event.type}`; }}
+                                    className="w-full h-full object-cover"
+                                />
+                             </div>
+
+                             <div className="flex-1 w-full">
                                  <div className="flex items-center gap-3 mb-2">
                                      <Link to={`/organizer/event/${event._id}`} className="hover:underline">
-                                        <h3 className="text-xl font-bold text-gray-900">{event.title}</h3>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{event.title}</h3>
                                     </Link>
                                      <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider ${event.privacy === 'private' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
                                          {event.privacy}
@@ -349,7 +359,7 @@ export default function OrganizerDashboard() {
                                      <div className="w-[1px] bg-gray-200 mx-1"></div>
                                      <Link 
                                         to={`/events/${event._id}`} 
-                                        className="p-2 text-teal-600 hover:bg-white rounded-md transition flex items-center gap-1 text-xs font-bold"
+                                        className="p-2 text-teal-600 dark:text-teal-400 hover:bg-white dark:hover:bg-fiord rounded-md transition flex items-center gap-1 text-xs font-bold"
                                         title="Discussion"
                                      >
                                          <FaCommentDots /> Chat
@@ -383,13 +393,13 @@ export default function OrganizerDashboard() {
 
             {/* --- ATTENDEES TAB --- */}
             {activeTab === 'attendees' && (
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="p-6 border-b border-gray-100 flex justify-between">
-                        <h3 className="text-lg font-bold text-gray-900">All Attendees ({attendees.length})</h3>
+                <div className="bg-white dark:bg-bluewood rounded-2xl shadow-sm border border-gray-200 dark:border-fiord overflow-hidden">
+                    <div className="p-6 border-b border-gray-100 dark:border-fiord flex justify-between">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">All Attendees ({attendees.length})</h3>
                         <button className="text-blue-600 text-sm font-bold">Export CSV</button>
                     </div>
                     <table className="w-full text-left">
-                        <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-bold">
+                        <thead className="bg-gray-50 dark:bg-fiord/30 text-gray-500 dark:text-lynch text-xs uppercase font-bold">
                             <tr>
                                 <th className="px-6 py-4">Name</th>
                                 <th className="px-6 py-4">Email</th>
@@ -403,7 +413,7 @@ export default function OrganizerDashboard() {
                                     <td className="px-6 py-4 font-medium text-gray-900">{att.name}</td>
                                     <td className="px-6 py-4 text-gray-500">{att.email}</td>
                                     <td className="px-6 py-4 font-bold text-emerald-600">₹{att.totalSpent}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-600">
+                                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-casper">
                                         {att.eventsAttended.map(e => e.eventTitle).join(", ")}
                                     </td>
                                 </tr>
@@ -421,17 +431,17 @@ export default function OrganizerDashboard() {
             {/* --- MARKETING TAB --- */}
             {activeTab === 'marketing' && (
                 <div className="max-w-4xl mx-auto">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 text-center">
+                    <div className="bg-white dark:bg-bluewood p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-fiord text-center">
                         <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
                             <FaBullhorn />
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">Email Campaigns</h2>
-                        <p className="text-gray-500 mb-8">Send updates, reminders, and newsletters to your audience.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Email Campaigns</h2>
+                        <p className="text-gray-500 dark:text-lynch mb-8">Send updates, reminders, and newsletters to your audience.</p>
                         
-                        <div className="text-left max-w-lg mx-auto bg-gray-50 p-6 rounded-xl">
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Select Event to Blast</label>
+                        <div className="text-left max-w-lg mx-auto bg-gray-50 dark:bg-mirage p-6 rounded-xl">
+                            <label className="block text-sm font-bold text-gray-700 dark:text-casper mb-2">Select Event to Blast</label>
                             <select 
-                                className="w-full p-3 border border-gray-300 rounded-lg mb-4"
+                                className="w-full p-3 border border-gray-300 dark:border-fiord rounded-lg mb-4 bg-white dark:bg-bluewood text-gray-900 dark:text-white"
                                 onChange={(e) => setSelectedEventId(e.target.value)}
                             >
                                 <option value="">-- Select Event --</option>
@@ -459,15 +469,15 @@ export default function OrganizerDashboard() {
                          <FaMoneyBill className="absolute -right-6 -bottom-6 text-9xl text-white opacity-20" />
                      </div>
 
-                     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                         <h3 className="font-bold text-gray-900 mb-4">Revenue Breakdown by Event</h3>
+                     <div className="bg-white dark:bg-bluewood rounded-2xl shadow-sm border border-gray-200 dark:border-fiord p-6">
+                         <h3 className="font-bold text-gray-900 dark:text-white mb-4">Revenue Breakdown by Event</h3>
                          {events.map(event => (
-                             <div key={event._id} className="flex justify-between items-center py-4 border-b border-gray-100 last:border-0">
+                             <div key={event._id} className="flex justify-between items-center py-4 border-b border-gray-100 dark:border-fiord last:border-0">
                                  <div>
-                                     <p className="font-bold text-gray-800">{event.title}</p>
-                                     <p className="text-xs text-gray-500">{new Date(event.start).toLocaleDateString()}</p>
+                                     <p className="font-bold text-gray-800 dark:text-white">{event.title}</p>
+                                     <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(event.start).toLocaleDateString()}</p>
                                  </div>
-                                 <span className="font-mono text-gray-600">Calculated from Ticket Sales</span>
+                                 <span className="font-mono text-gray-600 dark:text-lynch">Calculated from Ticket Sales</span>
                              </div>
                          ))}
                      </div>
@@ -476,79 +486,81 @@ export default function OrganizerDashboard() {
 
             {/* --- SETTINGS TAB --- */}
             {activeTab === 'settings' && (
-                <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Account Settings</h2>
+                <div className="max-w-2xl mx-auto bg-white dark:bg-bluewood p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-fiord">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Account Settings</h2>
                     
                     <div className="space-y-6">
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Organizer Name</label>
+                            <label className="block text-sm font-bold text-gray-700 dark:text-casper mb-2">Organizer Name</label>
                             <input 
                                 type="text" 
                                 value={user.name} 
                                 onChange={(e) => setUser({...user, name: e.target.value})}
-                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl" 
+                                className="w-full px-4 py-3 bg-gray-50 dark:bg-mirage/50 border border-gray-200 dark:border-fiord rounded-xl text-gray-900 dark:text-white" 
                             />
                         </div>
                          <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Email Address <span className="text-xs font-normal text-gray-400">(Cannot be changed)</span></label>
+                            <label className="block text-sm font-bold text-gray-700 dark:text-casper mb-2">Email Address <span className="text-xs font-normal text-gray-400">(Cannot be changed)</span></label>
                             <input 
                                 type="email" 
                                 value={user.email || ""} 
                                 readOnly
                                 disabled
-                                className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl text-gray-500 cursor-not-allowed" 
+                                className="w-full px-4 py-3 bg-gray-100 dark:bg-mirage border border-gray-200 dark:border-fiord rounded-xl text-gray-500 dark:text-lynch cursor-not-allowed" 
                             />
                         </div>
                         
-                        <div className="pt-6 border-t border-gray-100">
-                            <h3 className="font-bold text-lg mb-4">Branding</h3>
+                        <div className="pt-6 border-t border-gray-100 dark:border-fiord">
+                            <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-white">Branding</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 {/* Logo Upload */}
-                                <div 
-                                    className="p-4 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center gap-2 cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition relative overflow-hidden"
-                                    onClick={() => document.getElementById('logo-upload').click()}
+                                <label 
+                                    htmlFor="logo-upload"
+                                    className="p-4 border-2 border-dashed border-gray-300 dark:border-fiord rounded-xl flex flex-col items-center gap-2 cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-fiord/30 transition relative overflow-hidden"
                                 >
                                     <input 
                                         id="logo-upload" 
+                                        name="logo"
                                         type="file" 
                                         accept="image/*"
                                         className="hidden"
                                         onChange={handleLogoUpload}
                                     />
-                                    {user.branding?.logo ? (
+                                    {user.branding?.logo && !user.branding.logo.startsWith('blob:') ? (
                                         <img src={user.branding.logo} alt="Logo" className="w-16 h-16 object-contain" />
                                     ) : (
-                                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+                                        <div className="w-10 h-10 bg-gray-100 dark:bg-fiord/30 rounded-full flex items-center justify-center text-gray-400">
                                             <FaCamera />
                                         </div>
                                     )}
-                                    <span className="text-sm font-bold text-gray-600">
+                                    <span className="text-sm font-bold text-gray-600 dark:text-casper">
                                         {user.branding?.logo ? "Change Logo" : "Upload Logo"}
                                     </span>
-                                </div>
+                                </label>
 
                                 {/* Theme Color */}
-                                <div 
-                                    className="p-4 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center gap-2 cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition"
-                                    onClick={() => document.getElementById('theme-color').click()}
+                                <label 
+                                    htmlFor="theme-color"
+                                    className="p-4 border-2 border-dashed border-gray-300 dark:border-fiord rounded-xl flex flex-col items-center gap-2 cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-fiord/30 transition"
                                 >
                                     <input 
                                         id="theme-color" 
+                                        name="themeColor"
                                         type="color" 
                                         className="invisible w-0 h-0 absolute"
                                         value={user.branding?.themeColor || "#3B82F6"}
                                         onChange={(e) => setUser(prev => ({...prev, branding: {...prev.branding, themeColor: e.target.value}}))}
                                     />
                                     <div 
-                                        className="w-10 h-10 rounded-full border-2 border-gray-200 shadow-sm" 
+                                        className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-fiord shadow-sm" 
                                         style={{ backgroundColor: user.branding?.themeColor || '#f3f4f6' }}
                                     ></div>
-                                    <span className="text-sm font-bold text-gray-600">Theme Color</span>
-                                </div>
+                                    <span className="text-sm font-bold text-gray-600 dark:text-casper">Theme Color</span>
+                                </label>
                             </div>
                         </div>
 
-                        <div className="pt-6 border-t border-gray-100">
+                        <div className="pt-6 border-t border-gray-100 dark:border-fiord">
                              <button 
                                 onClick={async () => {
                                     try {

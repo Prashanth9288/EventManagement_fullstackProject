@@ -14,7 +14,7 @@ const createEventSchema = Joi.object({
   description: Joi.string().allow(""),
   tags: Joi.array().items(Joi.string()),
   privacy: Joi.string().valid("public", "private", "rsvp").default("public"),
-  type: Joi.string().valid("corporate", "social", "workshop", "other").default("social"),
+  type: Joi.string().valid('Social', 'Corporate', 'Workshop', 'Conference', 'Concert', 'Exhibition', 'corporate', 'social', 'workshop', 'other').default("Social"),
   format: Joi.string().valid("virtual", "physical", "hybrid").default("physical"),
   status: Joi.string().valid("draft", "published", "past", "cancelled").default("draft"),
   start: Joi.date().required(),
@@ -61,7 +61,7 @@ const updateEventSchema = Joi.object({
   description: Joi.string().allow("").optional(),
   tags: Joi.array().items(Joi.string()).optional(),
   privacy: Joi.string().valid("public", "private", "rsvp").optional(),
-  type: Joi.string().valid("corporate", "social", "workshop", "other").optional(),
+  type: Joi.string().valid('Social', 'Corporate', 'Workshop', 'Conference', 'Concert', 'Exhibition', 'corporate', 'social', 'workshop', 'other').optional(),
   format: Joi.string().valid("virtual", "physical", "hybrid").optional(),
   status: Joi.string().valid("draft", "published", "past", "cancelled").optional(),
   start: Joi.date().optional(),
@@ -109,10 +109,23 @@ router.get("/test", (req, res) => {
   res.json({ message: "Event routes working" });
 });
 
+// Helper to strip blobs
+const sanitizeEvent = (event) => {
+  const e = event.toObject ? event.toObject() : event;
+  if (e.media) {
+    if (e.media.banners) e.media.banners = e.media.banners.filter(b => b && !b.startsWith('blob:'));
+    if (e.media.logos) e.media.logos = e.media.logos.filter(l => l && !l.startsWith('blob:'));
+    if (e.media.gallery) e.media.gallery = e.media.gallery.filter(g => g && !g.startsWith('blob:'));
+    if (e.media.videos) e.media.videos = e.media.videos.filter(v => v && !v.startsWith('blob:'));
+  }
+  return e;
+};
+
 // GET /api/events/my-events - logged in user's events
 router.get("/my-events", authMiddleware, async (req, res, next) => {
   try {
-    const events = await Event.find({ host: req.user.id }).sort({ start: 1 });
+    const rawEvents = await Event.find({ host: req.user.id }).sort({ start: 1 });
+    const events = rawEvents.map(sanitizeEvent);
     res.json({ events });
   } catch (err) {
     next(err);
@@ -122,7 +135,8 @@ router.get("/my-events", authMiddleware, async (req, res, next) => {
 // GET /api/events - all events (public)
 router.get("/", async (req, res, next) => {
   try {
-    const events = await Event.find().sort({ start: 1 }).populate('host', 'name');
+    const rawEvents = await Event.find().sort({ start: 1 }).populate('host', 'name');
+    const events = rawEvents.map(sanitizeEvent);
     res.json({ events });
   } catch (err) {
     next(err);
@@ -188,7 +202,8 @@ router.get("/:id", async (req, res) => {
       maybe: counts.find(c => c._id === 'maybe')?.count || 0
     };
 
-    res.json({ ...event.toObject(), rsvpCounts });
+    const sanitizedEvent = sanitizeEvent(event);
+    res.json({ ...sanitizedEvent, rsvpCounts });
   } catch (err) {
     res.status(400).json({ error: "Invalid ID format" });
   }

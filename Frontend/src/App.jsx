@@ -29,9 +29,10 @@ import OrganizerEventDetails from "./Pages/Organizer/OrganizerEventDetails";
 import OrganizerEventHub from "./Pages/Organizer/OrganizerEventHub";
 import AttendeeDashboard from "./Pages/Attendee/AttendeeDashboard";
 import Features from "./Pages/Shared/Features";
+import About from "./Pages/Shared/About";
 import Contact from "./Pages/Shared/Contact";
 import { ThemeProvider } from "./context/ThemeContext";
-import BrandingSettings from "./components/BrandingSettings";
+import AIChatbot from "./components/AIChatbot";
 
 // Internal Layout Component to handle conditional rendering based on route
 function Layout({ children, user, setUser }) {
@@ -40,8 +41,8 @@ function Layout({ children, user, setUser }) {
   const isOrganizerRoute = organizerRoutes.some(route => location.pathname.startsWith(route));
 
   return (
-    <>
-      <BrandingSettings />
+    <div className="min-h-screen bg-white dark:bg-mirage text-gray-900 dark:text-casper transition-colors duration-300">
+      <AIChatbot />
       {!isOrganizerRoute && (
         user ? <NavbarAfterLogin user={user} setUser={setUser} /> : <Navbar />
       )}
@@ -50,7 +51,7 @@ function Layout({ children, user, setUser }) {
       <div className={isOrganizerRoute ? "" : "pt-20"}>
         {children}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -180,6 +181,7 @@ function App() {
               element={user ? <RSVPDashboard /> : <Navigate to="/login" />}
             />
             <Route path="/features" element={<Features />} />
+            <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </Layout>

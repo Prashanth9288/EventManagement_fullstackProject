@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 
 export default function CreatePollModal({ eventId, onClose, onSuccess }) {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [loading, setLoading] = useState(false);
+  
+  // Socket Management
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+      const s = io(window.API_BASE_URL || "http://localhost:5000");
+      setSocket(s);
+      return () => s.disconnect();
+  }, []);
 
   const handleOptionChange = (index, value) => {
       const newOptions = [...options];
@@ -24,29 +34,12 @@ export default function CreatePollModal({ eventId, onClose, onSuccess }) {
       
       setLoading(true);
       try {
-          // Sending via Socket would be ideal for "Live" polls, but let's stick to REST for creation if using the dashboard
-          // OR better: Emit using socket if we want instant push? 
-          // Previous server code handled 'poll:create' via socket. Let's try to use that if available, else REST.
-          // Wait, server.js has socket.on('poll:create'). Let's use socket if we can, but we are in dashboard. 
-          // Actually, let's use a REST endpoint if it exists? "pollRoutes" is imported in server.js.
-          // Let's check pollRoutes. If not, use socket.
-          
-          // Fallback: Use Socket via window.io if global, or just generic functionality.
-          // Simpler: Just emit the socket event. 
-          
-          if (window.io) {
-              const socket = window.io(window.API_BASE_URL + "");
-              socket.emit('poll:create', { eventId, question, options });
-              socket.disconnect(); // Connect, emit, disconnect (stateless)
-              // We need to wait? Socket is fire and forget mostly here. 
+          if (socket) {
+             socket.emit('poll:create', { eventId, question, options });
           }
-          
-          // Ideally we should have a REST endpoint for persistence too?
-          // The socket handler SAVES to DB. So just emitting is enough.
           
           onSuccess();
           onClose();
-
       } catch (err) {
           console.error(err);
           alert("Failed to create poll");
@@ -57,26 +50,26 @@ export default function CreatePollModal({ eventId, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 relative animate-scale-in">
-            <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <div className="bg-white dark:bg-bluewood rounded-2xl w-full max-w-md shadow-2xl p-6 relative animate-scale-in">
+            <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 dark:text-lynch hover:text-gray-600 dark:hover:text-white transition-colors">
                 <FaTimes />
             </button>
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Create Live Poll</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Create Live Poll</h2>
             
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Question</label>
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Question</label>
                     <input 
                         type="text" 
                         value={question} 
                         onChange={e => setQuestion(e.target.value)}
                         placeholder="e.g. What session did you like most?"
-                        className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full px-4 py-2 bg-gray-50 dark:bg-mirage border border-gray-200 dark:border-fiord rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-gray-900 dark:text-white dark:placeholder-lynch transition-colors"
                     />
                 </div>
 
                 <div className="space-y-3">
-                    <label className="block text-sm font-bold text-gray-700">Options</label>
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300">Options</label>
                     {options.map((opt, idx) => (
                         <div key={idx} className="flex gap-2">
                             <input 
@@ -84,16 +77,16 @@ export default function CreatePollModal({ eventId, onClose, onSuccess }) {
                                 value={opt}
                                 onChange={e => handleOptionChange(idx, e.target.value)}
                                 placeholder={`Option ${idx + 1}`}
-                                className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                className="flex-1 px-4 py-2 bg-gray-50 dark:bg-mirage border border-gray-200 dark:border-fiord rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-gray-900 dark:text-white dark:placeholder-lynch transition-colors"
                             />
                             {options.length > 2 && (
-                                <button type="button" onClick={() => removeOption(idx)} className="text-red-400 hover:text-red-600 px-2">
+                                <button type="button" onClick={() => removeOption(idx)} className="text-red-400 dark:text-red-500 hover:text-red-600 dark:hover:text-red-400 px-2 transition-colors">
                                     <FaTrash />
                                 </button>
                             )}
                         </div>
                     ))}
-                    <button type="button" onClick={addOption} className="text-indigo-600 text-sm font-bold flex items-center gap-1 hover:underline">
+                    <button type="button" onClick={addOption} className="text-indigo-600 dark:text-indigo-400 text-sm font-bold flex items-center gap-1 hover:underline">
                         <FaPlus size={12} /> Add Option
                     </button>
                 </div>
