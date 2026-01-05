@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   /* Premium Palette - GREEN ACCENT THEME (A200, A400, A700) */
