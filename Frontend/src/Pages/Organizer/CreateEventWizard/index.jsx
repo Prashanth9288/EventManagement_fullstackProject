@@ -15,7 +15,7 @@ const CreateEventWizard = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    type: 'Social',
+    type: 'social',
     privacy: 'public',
     format: 'physical',
     start: '',

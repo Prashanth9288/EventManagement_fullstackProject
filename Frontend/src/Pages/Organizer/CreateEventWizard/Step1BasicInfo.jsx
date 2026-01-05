@@ -46,7 +46,7 @@ const Step1BasicInfo = ({ formData, updateFormData, nextStep }) => {
             >
                 <option value="" disabled>Select a category</option>
                 {['Social', 'Corporate', 'Workshop', 'Conference', 'Concert', 'Exhibition'].map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
+                    <option key={cat} value={cat.toLowerCase()}>{cat}</option>
                 ))}
             </select>
         </div>
